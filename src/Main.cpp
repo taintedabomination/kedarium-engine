@@ -6,6 +6,14 @@ const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 const char*        WINDOW_TITLE  = "Kedarium Engine";
 
+const char* ENGINE_NAME    = "Kedarium Engine";
+const char* ENGINE_VERSION = "0.1";
+const char* ENGINE_AUTHOR  = "taintedabomination";
+const char* ENGINE_LICENSE = "GNU GPLv3";
+
+void printEngineInfo();
+void printVersionInfo();
+
 int main()
 {
   glfwInit();
@@ -43,6 +51,9 @@ int main()
   GLclampf alpha = 1.0f;
   glClearColor(red, green, blue, alpha);
 
+  printEngineInfo();
+  printVersionInfo();
+
   while (!glfwWindowShouldClose(window))
   {
     glfwPollEvents();
@@ -52,4 +63,19 @@ int main()
   glfwDestroyWindow(window);
   glfwTerminate();
   return 0;
+}
+
+void printEngineInfo()
+{
+  std::cout << ENGINE_NAME << " " << ENGINE_VERSION << std::endl;
+  std::cout << "Created by " << ENGINE_AUTHOR << std::endl;
+  std::cout << "Licensed under " << ENGINE_LICENSE << std::endl;
+}
+
+void printVersionInfo()
+{
+  std::cout << '\n';
+  std::cout << "OpenGL: " << glGetString(GL_VERSION) << std::endl; 
+  std::cout << "GLFW:   " << glfwGetVersionString() << std::endl; 
+  std::cout << "GLEW:   " << glewGetString(GLEW_VERSION) << std::endl; 
 }
