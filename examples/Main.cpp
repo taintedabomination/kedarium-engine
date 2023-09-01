@@ -1,6 +1,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <string>
+
+#include "Kedarium/File.hpp"
 
 const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
@@ -53,6 +56,9 @@ int main()
 
   printEngineInfo();
   printVersionInfo();
+
+  std::string vertexShaderSource = kdr::file::getContents("resources/Shaders/default.vert");
+  std::string fragmentShaderSource = kdr::file::getContents("resources/Shaders/default.frag");
 
   while (!glfwWindowShouldClose(window))
   {
