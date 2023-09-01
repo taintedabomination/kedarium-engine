@@ -16,9 +16,9 @@ find_package(glfw3 REQUIRED)
 # CXX Standard
 set(CXX_STANDARD_REQUIRED 11)
 
-# Executable
-add_executable(
-  ${PROJECT_NAME}
-  src/Main.cpp
-)
-target_link_libraries(${PROJECT_NAME} PUBLIC GL GLEW glfw)
+# Include Directory
+include_directories(include)
+
+# Subdirectories
+add_subdirectory(src)
+add_subdirectory(examples)
