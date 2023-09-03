@@ -3,19 +3,12 @@
 #include <iostream>
 #include <string>
 
+#include "Kedarium/Core.hpp"
 #include "Kedarium/Graphics.hpp"
 
 const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 const char*        WINDOW_TITLE  = "Kedarium Engine";
-
-const char* ENGINE_NAME    = "Kedarium Engine";
-const char* ENGINE_VERSION = "0.1";
-const char* ENGINE_AUTHOR  = "taintedabomination";
-const char* ENGINE_LICENSE = "GNU GPLv3";
-
-void printEngineInfo();
-void printVersionInfo();
 
 const GLfloat vertices[] = {
   -0.5f,  -0.5f, 0.f, 1.f, 0.f, 0.f,
@@ -68,8 +61,8 @@ int main()
   GLclampf alpha = 1.0f;
   glClearColor(red, green, blue, alpha);
 
-  printEngineInfo();
-  printVersionInfo();
+  kdr::core::printEngineInfo();
+  kdr::core::printVersionInfo();
 
   kdr::Shader defaultShader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
 
@@ -114,19 +107,4 @@ int main()
   glfwDestroyWindow(window);
   glfwTerminate();
   return 0;
-}
-
-void printEngineInfo()
-{
-  std::cout << ENGINE_NAME << " " << ENGINE_VERSION << std::endl;
-  std::cout << "Created by " << ENGINE_AUTHOR << std::endl;
-  std::cout << "Licensed under " << ENGINE_LICENSE << std::endl;
-}
-
-void printVersionInfo()
-{
-  std::cout << '\n';
-  std::cout << "OpenGL: " << glGetString(GL_VERSION) << std::endl; 
-  std::cout << "GLFW:   " << glfwGetVersionString() << std::endl; 
-  std::cout << "GLEW:   " << glewGetString(GLEW_VERSION) << std::endl; 
 }

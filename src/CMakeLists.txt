@@ -1,6 +1,7 @@
 # Library
 add_library(
   Kedarium
+  Core.cpp
   File.cpp
   Graphics.cpp
 )
