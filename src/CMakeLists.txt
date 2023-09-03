@@ -2,6 +2,7 @@
 add_library(
   Kedarium
   File.cpp
+  Graphics.cpp
 )
 
 # Include Directory
