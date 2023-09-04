@@ -66,13 +66,11 @@ int main()
 
   kdr::Shader defaultShader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
 
-  GLuint VAO;
-  glGenVertexArrays(1, &VAO);
-
+  kdr::VAO VAO1;
   kdr::VBO VBO1(vertices, sizeof(vertices));
   kdr::EBO EBO1(indices, sizeof(indices));
 
-  glBindVertexArray(VAO);
+  VAO1.Bind();
   VBO1.Bind();
   EBO1.Bind();
 
@@ -81,7 +79,7 @@ int main()
   glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, (6 * sizeof(GLfloat)), (void*)(3 * sizeof(GLfloat)));
   glEnableVertexAttribArray(1);
 
-  glBindVertexArray(0);
+  VAO1.Unbind();
   VBO1.Unbind();
   EBO1.Unbind();
 
@@ -89,13 +87,13 @@ int main()
   {
     glfwPollEvents();
     defaultShader.Use();
-    glBindVertexArray(VAO);
+    VAO1.Bind();
     glClear(GL_COLOR_BUFFER_BIT);
     glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
     glfwSwapBuffers(window);
   }
 
-  glDeleteVertexArrays(1, &VAO);
+  VAO1.Delete();
   VBO1.Delete();
   EBO1.Delete();
   defaultShader.Delete();

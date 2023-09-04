@@ -9,33 +9,65 @@ namespace kdr
 {
   class Shader
   {
-  public:
-    /**
-     * Constructor for the Shader class.
-     *
-     * @param vertexPath The path to the vertex shader source file.
-     * @param fragmentPath The path to the fragment shader source file.
-     */
-    Shader(std::string vertexPath, std::string fragmentPath);
+    public:
+      /**
+       * Constructor for the Shader class.
+       *
+       * @param vertexPath The path to the vertex shader source file.
+       * @param fragmentPath The path to the fragment shader source file.
+       */
+      Shader(std::string vertexPath, std::string fragmentPath);
 
-    /**
-     * Gets the ID of the shader program.
-     *
-     * @return The shader program ID.
-     */
-    const GLuint getID() const;
+      /**
+       * Gets the ID of the shader program.
+       *
+       * @return The shader program ID.
+       */
+      const GLuint getID() const;
 
-    /**
-     * Activates the shader program for rendering.
-     */
-    void Use();
-    /**
-     * Deletes the shader program.
-     */
-    void Delete();
+      /**
+       * Activates the shader program for rendering.
+       */
+      void Use();
+      /**
+       * Deletes the shader program.
+       */
+      void Delete();
 
-  private:
-    GLuint ID;
+    private:
+      GLuint ID;
+  };
+
+  class VAO
+  {
+    public:
+      /**
+       * Constructor for creating a VAO.
+       */
+      VAO();
+
+      /**
+       * Get the ID of the VAO.
+       * 
+       * @return The ID of the VAO.
+       */
+      const GLuint getID() const;
+
+      /**
+       * Bind the VAO for use.
+       */
+      void Bind();
+      /**
+       * Unbind the currently bound VAO.
+       */
+      void Unbind();
+      /**
+       * Delete the VAO, releasing its resources.
+       */
+      void Delete();
+
+    private:
+      GLuint ID;
   };
 
   class VBO
