@@ -6,8 +6,8 @@ kdr::Shader::Shader(std::string vertexPath, std::string fragmentPath)
   std::string vertexShaderSource = kdr::file::getContents("resources/Shaders/default.vert");
   std::string fragmentShaderSource = kdr::file::getContents("resources/Shaders/default.frag");
 
-  const char* vertexCStringSource = vertexShaderSource.c_str();
-  const char* fragmentCStringSource = fragmentShaderSource.c_str();
+  const char *vertexCStringSource = vertexShaderSource.c_str();
+  const char *fragmentCStringSource = fragmentShaderSource.c_str();
 
   GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
   GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -68,4 +68,58 @@ void kdr::Shader::Use()
 void kdr::Shader::Delete()
 {
   glDeleteProgram(this->ID);
+}
+
+kdr::VBO::VBO(GLfloat* vertices, GLsizeiptr size)
+{
+  glGenBuffers(1, &this->ID);
+  glBindBuffer(GL_ARRAY_BUFFER, this->ID);
+  glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+}
+
+const GLuint kdr::VBO::getID() const
+{
+  return this->ID;
+}
+
+void kdr::VBO::Bind()
+{
+  glBindBuffer(GL_ARRAY_BUFFER, this->ID);
+}
+
+void kdr::VBO::Unbind()
+{
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void kdr::VBO::Delete()
+{
+  glDeleteBuffers(1, &this->ID);
+}
+
+kdr::EBO::EBO(GLuint* indices, GLsizeiptr size)
+{
+  glGenBuffers(1, &this->ID);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ID);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+}
+
+const GLuint kdr::EBO::getID() const
+{
+  return this->ID;
+}
+
+void kdr::EBO::Bind()
+{
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->ID);
+}
+
+void kdr::EBO::Unbind()
+{
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void kdr::EBO::Delete()
+{
+  glDeleteBuffers(1, &this->ID);
 }

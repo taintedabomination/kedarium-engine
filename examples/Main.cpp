@@ -10,7 +10,7 @@ const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 const char*        WINDOW_TITLE  = "Kedarium Engine";
 
-const GLfloat vertices[] = {
+GLfloat vertices[] = {
   -0.5f,  -0.5f, 0.f, 1.f, 0.f, 0.f,
    0.0f,  -0.5f, 0.f, 0.f, 1.f, 0.f,
    0.5f,  -0.5f, 0.f, 0.f, 0.f, 1.f,
@@ -18,7 +18,7 @@ const GLfloat vertices[] = {
    0.25f,  0.0f, 0.f, 0.f, 1.f, 1.f,
    0.0f,   0.5f, 0.f, 1.f, 0.f, 1.f,
 };
-const GLuint indices[] = {
+GLuint indices[] = {
   0, 1, 3,
   1, 2, 4,
   3, 4, 5,
@@ -67,19 +67,14 @@ int main()
   kdr::Shader defaultShader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
 
   GLuint VAO;
-  GLuint VBO;
-  GLuint EBO;
-
   glGenVertexArrays(1, &VAO);
-  glGenBuffers(1, &VBO);
-  glGenBuffers(1, &EBO);
+
+  kdr::VBO VBO1(vertices, sizeof(vertices));
+  kdr::EBO EBO1(indices, sizeof(indices));
 
   glBindVertexArray(VAO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  VBO1.Bind();
+  EBO1.Bind();
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (6 * sizeof(GLfloat)), (void*)0);
   glEnableVertexAttribArray(0);
@@ -87,8 +82,8 @@ int main()
   glEnableVertexAttribArray(1);
 
   glBindVertexArray(0);
-  glBindBuffer(GL_ARRAY_BUFFER, 0);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+  VBO1.Unbind();
+  EBO1.Unbind();
 
   while (!glfwWindowShouldClose(window))
   {
@@ -101,8 +96,8 @@ int main()
   }
 
   glDeleteVertexArrays(1, &VAO);
-  glDeleteBuffers(1, &VBO);
-  glDeleteBuffers(1, &EBO);
+  VBO1.Delete();
+  EBO1.Delete();
   defaultShader.Delete();
   glfwDestroyWindow(window);
   glfwTerminate();
