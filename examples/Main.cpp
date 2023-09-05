@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Kedarium/Core.hpp"
+#include "Kedarium/Window.hpp"
 #include "Kedarium/Graphics.hpp"
 
 const unsigned int WINDOW_WIDTH  = 800;
@@ -24,80 +25,76 @@ GLuint indices[] = {
   3, 4, 5,
 };
 
+class MyWindow : public kdr::Window
+{
+  public:
+    MyWindow(const kdr::WindowProps& windowProps) : kdr::Window(windowProps)
+    {
+      this->defaultShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
+      this->VAO1 = new kdr::VAO();
+      this->VBO1 = new kdr::VBO(vertices, sizeof(vertices));
+      this->EBO1 = new kdr::EBO(indices, sizeof(indices));
+
+      this->VAO1->Bind();
+      this->VBO1->Bind();
+      this->EBO1->Bind();
+
+      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (6 * sizeof(GLfloat)), (void*)0);
+      glEnableVertexAttribArray(0);
+      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, (6 * sizeof(GLfloat)), (void*)(3 * sizeof(GLfloat)));
+      glEnableVertexAttribArray(1);
+
+      this->VAO1->Unbind();
+      this->VBO1->Unbind();
+      this->EBO1->Unbind();
+    };
+
+    ~MyWindow()
+    {
+      this->VAO1->Delete();
+      this->VBO1->Delete();
+      this->EBO1->Delete();
+      this->defaultShader->Delete();
+
+      delete this->defaultShader;
+      delete this->VAO1;
+      delete this->VBO1;
+      delete this->EBO1;
+    }
+
+    void update()
+    {
+
+    }
+
+    void render()
+    {
+      this->defaultShader->Use();
+      this->VAO1->Bind();
+      glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
+    }
+
+  private:
+    kdr::Shader* defaultShader;
+    kdr::VAO* VAO1;
+    kdr::VBO* VBO1;
+    kdr::EBO* EBO1;
+};
+
 int main()
 {
-  glfwInit();
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-  GLFWwindow* window = glfwCreateWindow(
-    WINDOW_WIDTH,
-    WINDOW_HEIGHT,
-    WINDOW_TITLE,
-    NULL,
-    NULL
+  const kdr::WindowProps windowProps = kdr::WindowProps(
+    800,
+    600,
+    "Kedarium Engine"
   );
-  if (window == NULL)
-  {
-    std::cerr << "Failed to create a GLFW Window!" << std::endl;
-    glfwTerminate();
-    return -1;
-  }
-  glfwMakeContextCurrent(window);
-
-  GLenum err = glewInit();
-  if (GLEW_OK != err)
-  {
-    std::cerr << "Failed to initialize GLEW!" << std::endl;
-    std::cerr << "Error: " << glewGetErrorString(err) << std::endl;
-    glfwTerminate();
-    return -1;
-  }
-
-  GLclampf red   = 0.0f;
-  GLclampf green = 0.3f;
-  GLclampf blue  = 0.3f;
-  GLclampf alpha = 1.0f;
-  glClearColor(red, green, blue, alpha);
+  MyWindow myWindow(windowProps);
 
   kdr::core::printEngineInfo();
   kdr::core::printVersionInfo();
 
-  kdr::Shader defaultShader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
+  myWindow.loop();
+  myWindow.close();
 
-  kdr::VAO VAO1;
-  kdr::VBO VBO1(vertices, sizeof(vertices));
-  kdr::EBO EBO1(indices, sizeof(indices));
-
-  VAO1.Bind();
-  VBO1.Bind();
-  EBO1.Bind();
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (6 * sizeof(GLfloat)), (void*)0);
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, (6 * sizeof(GLfloat)), (void*)(3 * sizeof(GLfloat)));
-  glEnableVertexAttribArray(1);
-
-  VAO1.Unbind();
-  VBO1.Unbind();
-  EBO1.Unbind();
-
-  while (!glfwWindowShouldClose(window))
-  {
-    glfwPollEvents();
-    defaultShader.Use();
-    VAO1.Bind();
-    glClear(GL_COLOR_BUFFER_BIT);
-    glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
-    glfwSwapBuffers(window);
-  }
-
-  VAO1.Delete();
-  VBO1.Delete();
-  EBO1.Delete();
-  defaultShader.Delete();
-  glfwDestroyWindow(window);
-  glfwTerminate();
   return 0;
 }
