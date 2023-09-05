@@ -1,5 +1,10 @@
 #include "Kedarium/Window.hpp"
 
+void framebufferSizeCallback(GLFWwindow* window, int width, int height)
+{
+  glViewport(0, 0, width, height);
+}
+
 kdr::Window::Window(const WindowProps& windowProps)
 {
   this->width = windowProps.width;
@@ -38,6 +43,8 @@ kdr::Window::Window(const WindowProps& windowProps)
   GLclampf blue  = 0.3f;
   GLclampf alpha = 1.0f;
   glClearColor(red, green, blue, alpha);
+
+  glfwSetFramebufferSizeCallback(this->window, framebufferSizeCallback);
 }
 
 const unsigned int kdr::Window::getWidth() const

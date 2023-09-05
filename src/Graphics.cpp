@@ -70,31 +70,6 @@ void kdr::Shader::Delete()
   glDeleteProgram(this->ID);
 }
 
-kdr::VAO::VAO()
-{
-  glGenVertexArrays(1, &this->ID);
-}
-
-const GLuint kdr::VAO::getID() const
-{
-  return this->ID;
-}
-
-void kdr::VAO::Bind()
-{
-  glBindVertexArray(this->ID);
-}
-
-void kdr::VAO::Unbind()
-{
-  glBindVertexArray(0);
-}
-
-void kdr::VAO::Delete()
-{
-  glDeleteVertexArrays(1, &this->ID);
-}
-
 kdr::VBO::VBO(GLfloat* vertices, GLsizeiptr size)
 {
   glGenBuffers(1, &this->ID);
@@ -149,4 +124,37 @@ void kdr::EBO::Unbind()
 void kdr::EBO::Delete()
 {
   glDeleteBuffers(1, &this->ID);
+}
+
+kdr::VAO::VAO()
+{
+  glGenVertexArrays(1, &this->ID);
+}
+
+const GLuint kdr::VAO::getID() const
+{
+  return this->ID;
+}
+
+void kdr::VAO::LinkAttrib(kdr::VBO& VBO, GLuint layout, GLint size, GLenum type, GLsizei stride, const void* offset)
+{
+  VBO.Bind();
+  glVertexAttribPointer(layout, size, type, GL_FALSE, stride, offset);
+  glEnableVertexAttribArray(layout);
+  VBO.Unbind();
+}
+
+void kdr::VAO::Bind()
+{
+  glBindVertexArray(this->ID);
+}
+
+void kdr::VAO::Unbind()
+{
+  glBindVertexArray(0);
+}
+
+void kdr::VAO::Delete()
+{
+  glDeleteVertexArrays(1, &this->ID);
 }

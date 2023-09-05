@@ -38,38 +38,6 @@ namespace kdr
       GLuint ID;
   };
 
-  class VAO
-  {
-    public:
-      /**
-       * Constructor for creating a VAO.
-       */
-      VAO();
-
-      /**
-       * Get the ID of the VAO.
-       * 
-       * @return The ID of the VAO.
-       */
-      const GLuint getID() const;
-
-      /**
-       * Bind the VAO for use.
-       */
-      void Bind();
-      /**
-       * Unbind the currently bound VAO.
-       */
-      void Unbind();
-      /**
-       * Delete the VAO, releasing its resources.
-       */
-      void Delete();
-
-    private:
-      GLuint ID;
-  };
-
   class VBO
   {
     public:
@@ -133,6 +101,49 @@ namespace kdr
       void Unbind();
       /**
        * Deletes the EBO, releasing its resources.
+       */
+      void Delete();
+
+    private:
+      GLuint ID;
+  };
+
+  class VAO
+  {
+    public:
+      /**
+       * Constructor for creating a VAO.
+       */
+      VAO();
+
+      /**
+       * Get the ID of the VAO.
+       * 
+       * @return The ID of the VAO.
+       */
+      const GLuint getID() const;
+
+      /**
+       * Links a Vertex Buffer Object (VBO) to a vertex attribute layout in the Vertex Array Object (VAO).
+       *
+       * @param VBO The VBO to link.
+       * @param layout The attribute layout location.
+       * @param size The number of components per attribute (e.g., 3 for XYZ coordinates).
+       * @param type The data type of the attribute components (e.g., GL_FLOAT for floating-point values).
+       * @param stride The stride between consecutive attributes (in bytes).
+       * @param offset The offset to the start of the attribute data (in bytes).
+       */
+      void LinkAttrib(VBO& VBO, GLuint layout, GLint size, GLenum type, GLsizei stride, const void* offset);
+      /**
+       * Bind the VAO for use.
+       */
+      void Bind();
+      /**
+       * Unbind the currently bound VAO.
+       */
+      void Unbind();
+      /**
+       * Delete the VAO, releasing its resources.
        */
       void Delete();
 

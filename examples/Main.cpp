@@ -39,10 +39,8 @@ class MyWindow : public kdr::Window
       this->VBO1->Bind();
       this->EBO1->Bind();
 
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (6 * sizeof(GLfloat)), (void*)0);
-      glEnableVertexAttribArray(0);
-      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, (6 * sizeof(GLfloat)), (void*)(3 * sizeof(GLfloat)));
-      glEnableVertexAttribArray(1);
+      this->VAO1->LinkAttrib(*this->VBO1, 0, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(0));
+      this->VAO1->LinkAttrib(*this->VBO1, 1, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 
       this->VAO1->Unbind();
       this->VBO1->Unbind();
