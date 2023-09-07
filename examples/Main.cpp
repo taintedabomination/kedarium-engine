@@ -15,8 +15,8 @@ const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 const char*        WINDOW_TITLE  = "Kedarium Engine";
 
-const glm::vec3 CAMERA_POS    = glm::vec3(0.f, 0.f, -5.f);
-const float     CAMERA_SPEED  = 10.f;
+const glm::vec3 CAMERA_POS    = glm::vec3(0.f, 0.f, 5.f);
+const float     CAMERA_SPEED  = 4.f;
 const float     CAMERA_FOV    = 45.f;
 const float     CAMERA_ASPECT = (float)(WINDOW_WIDTH) / WINDOW_HEIGHT;
 const float     CAMERA_NEAR   = 0.1f;
@@ -113,34 +113,14 @@ class MyWindow : public kdr::Window
 
     void update()
     {
-      this->mainCamera->handleInputs(this->getWindow());
-      this->testRotation += this->getDeltaTime() * 100.f;
+      this->mainCamera->handleInputs(this->getWindow(), this->getDeltaTime());
+      this->mainCamera->updateMatrices(this->defaultShader->getID(), "cameraMatrix");
     }
 
     void render()
     {
       this->defaultShader->Use();
       this->VAO1->Bind();
-
-      glm::mat4 model = glm::mat4(1.f);
-      glm::mat4 view = glm::mat4(1.f);
-      glm::mat4 proj = glm::mat4(1.f);
-
-      model = glm::rotate(model, glm::radians(this->testRotation), glm::vec3(0.f, 1.f, 0.f));
-      view = glm::translate(view, glm::vec3(0.f, 0.f, -5.f));
-      proj = glm::perspective(
-        glm::radians(CAMERA_FOV),
-        (float)(WINDOW_WIDTH) / WINDOW_HEIGHT,
-        CAMERA_NEAR,
-        CAMERA_FAR
-      );
-
-      GLint modelLoc = glGetUniformLocation(this->defaultShader->getID(), "model");
-      glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-      GLint viewLoc = glGetUniformLocation(this->defaultShader->getID(), "view");
-      glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-      GLint projLoc = glGetUniformLocation(this->defaultShader->getID(), "proj");
-      glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
 
       glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
     }
@@ -152,7 +132,6 @@ class MyWindow : public kdr::Window
     kdr::EBO* EBO1;
 
     kdr::Camera* mainCamera;
-    float testRotation{0.f};
 };
 
 int main()

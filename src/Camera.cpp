@@ -3,7 +3,6 @@
 kdr::Camera::Camera(const CameraProps& cameraProps)
 {
   this->position = cameraProps.position;
-  this->orientation = glm::vec3(0.f, 0.f, -1.f);
   this->speed = cameraProps.speed;
   this->fov = cameraProps.fov;
   this->aspectRatio = cameraProps.aspectRatio;
@@ -16,7 +15,47 @@ const glm::vec3 kdr::Camera::getPosition() const
   return this->position;
 }
 
-void kdr::Camera::handleInputs(GLFWwindow* window)
+void kdr::Camera::handleInputs(GLFWwindow* window, const float deltaTime)
 {
+  if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+  {
+    this->position += this->speed * deltaTime * this->orientation;
+  }
+  if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+  {
+    this->position += -this->speed * deltaTime * glm::cross(this->orientation, this->up);
+  }
+  if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+  {
+    this->position += -this->speed * deltaTime * this->orientation;
+  }
+  if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+  {
+    this->position += this->speed * deltaTime * glm::cross(this->orientation, this->up);
+  }
+  if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+  {
+    this->position += -this->speed * deltaTime * this->up;
+  }
+  if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+  {
+    this->position += this->speed * deltaTime * this->up;
+  }
+}
 
+void kdr::Camera::updateMatrices(GLuint programId, std::string uniform)
+{
+  glm::mat4 view = glm::mat4(1.f);
+  glm::mat4 proj = glm::mat4(1.f);
+
+  view = glm::lookAt(this->position, this->position + this->orientation, this->up);
+  proj = glm::perspective(
+    glm::radians(this->fov),
+    this->aspectRatio,
+    this->near,
+    this->far
+  );
+
+  GLint uniformLoc = glGetUniformLocation(programId, uniform.c_str());
+  glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj * view));
 }

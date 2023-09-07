@@ -1,8 +1,12 @@
 #ifndef KDR_CAMERA_HPP
 #define KDR_CAMERA_HPP
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <string>
 
 namespace kdr
 {
@@ -49,22 +53,31 @@ namespace kdr
       Camera(const CameraProps& cameraProps);
 
       /**
-       * Get the position of the camera in 3D space.
+       * Gets the position of the camera in 3D space.
        *
        * @return The position of the camera as a glm::vec3.
        */
       const glm::vec3 getPosition() const;
 
       /**
-       * Handle user inputs for camera control.
+       * Handles user inputs for camera control.
        *
        * @param window A pointer to the GLFW window used for input handling.
+       * @param deltaTime The time interval since the last frame update.
        */
-      void handleInputs(GLFWwindow* window);
+      void handleInputs(GLFWwindow* window, const float deltaTime);
+      /**
+       * Updates matrices and set them as a uniform in a shader program.
+       *
+       * @param programId The ID of the shader program to which the uniforms should be set.
+       * @param uniform The name of the uniform variable in the shader program.
+       */
+      void updateMatrices(GLuint programId, std::string uniform);
 
     private:
       glm::vec3 position;
-      glm::vec3 orientation;
+      glm::vec3 orientation {glm::vec3(0.f, 0.f, -1.f)};
+      glm::vec3 up {glm::vec3(0.f, 1.f, 0.f)};
 
       float speed;
       float fov;
