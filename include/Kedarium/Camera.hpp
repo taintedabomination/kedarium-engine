@@ -6,6 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/vector_angle.hpp>
 #include <string>
 
 namespace kdr
@@ -21,6 +23,7 @@ namespace kdr
     float aspectRatio;
     float near;
     float far;
+    float sensitivity;
 
     /**
      * Constructor for initializing camera properties.
@@ -30,6 +33,7 @@ namespace kdr
      * @param aspectRatio The aspect ratio of the camera.
      * @param near The distance of the near clipping plane.
      * @param far The distance of the far clipping plane.
+     * @param sensitivity The sensitivity of the camera.
      */
     CameraProps(
       const glm::vec3 position,
@@ -37,8 +41,9 @@ namespace kdr
       const float fov,
       const float aspectRatio,
       const float near,
-      const float far
-    ) : position(position), speed(speed), fov(fov), aspectRatio(aspectRatio), near(near), far(far)
+      const float far,
+      const float sensitivity
+    ) : position(position), speed(speed), fov(fov), aspectRatio(aspectRatio), near(near), far(far), sensitivity(sensitivity)
     {};
   };
 
@@ -76,7 +81,7 @@ namespace kdr
 
     private:
       glm::vec3 position{glm::vec3(0.f)};
-      glm::vec3 orientation{glm::vec3(0.f, 0.f, -1.f)};
+      glm::vec3 orientation{glm::vec3(0.f, 0.f, 1.f)};
       glm::vec3 up{glm::vec3(0.f, 1.f, 0.f)};
 
       float speed{0.f};
@@ -84,6 +89,7 @@ namespace kdr
       float aspectRatio{0.f};
       float near{0.f};
       float far{0.f};
+      float sensitivity{0.f};
 
       bool mouseLocked{false};
   };

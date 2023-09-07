@@ -15,12 +15,13 @@ const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 const char*        WINDOW_TITLE  = "Kedarium Engine";
 
-const glm::vec3 CAMERA_POS    = glm::vec3(0.f, 0.f, 5.f);
-const float     CAMERA_SPEED  = 4.f;
-const float     CAMERA_FOV    = 45.f;
-const float     CAMERA_ASPECT = (float)(WINDOW_WIDTH) / WINDOW_HEIGHT;
-const float     CAMERA_NEAR   = 0.1f;
-const float     CAMERA_FAR    = 100.f;
+const glm::vec3 CAMERA_POS         = glm::vec3(0.f, 0.f, -5.f);
+const float     CAMERA_SPEED       = 4.f;
+const float     CAMERA_FOV         = 45.f;
+const float     CAMERA_ASPECT      = (float)(WINDOW_WIDTH) / WINDOW_HEIGHT;
+const float     CAMERA_NEAR        = 0.1f;
+const float     CAMERA_FAR         = 100.f;
+const float     CAMERA_SENSITIVITY = 35.f;
 
 GLfloat vertices[] = {
   -0.5f,  -0.5f,  0.5f,  1.f, 0.f, 0.f,
@@ -147,7 +148,8 @@ int main()
     CAMERA_FOV,
     CAMERA_ASPECT,
     CAMERA_NEAR,
-    CAMERA_FAR
+    CAMERA_FAR,
+    CAMERA_SENSITIVITY
   );
 
   MyWindow myWindow(windowProps);

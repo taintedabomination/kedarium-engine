@@ -8,6 +8,7 @@ kdr::Camera::Camera(const CameraProps& cameraProps)
   this->aspectRatio = cameraProps.aspectRatio;
   this->near = cameraProps.near;
   this->far = cameraProps.far;
+  this->sensitivity = cameraProps.sensitivity;
 }
 
 const glm::vec3 kdr::Camera::getPosition() const
@@ -57,7 +58,29 @@ void kdr::Camera::handleInputs(GLFWwindow* window, const float deltaTime)
 
   int windowWidth;
   int windowHeight;
+  double mouseX;
+	double mouseY;
+  
   glfwGetWindowSize(window, &windowWidth, &windowHeight);
+  glfwGetCursorPos(window, &mouseX, &mouseY);
+
+  float rotX = this->sensitivity * (float)(mouseY - (windowHeight / 2)) / windowHeight;
+	float rotY = this->sensitivity * (float)(mouseX - (windowWidth / 2)) / windowWidth;
+
+  glm::vec3 newOrientation = glm::rotate(
+    this->orientation,
+    glm::radians(-rotX),
+    glm::normalize(glm::cross(
+      this->orientation,
+      this->up
+    ))
+  );
+  if (abs(glm::angle(newOrientation, this->up) - glm::radians(90.0f)) <= glm::radians(85.0f))
+  {
+    this->orientation = newOrientation;
+  }
+  this->orientation = glm::rotate(this->orientation, glm::radians(-rotY), this->up);
+
   glfwSetCursorPos(window, (double)windowWidth / 2, (double)windowHeight / 2);
 }
 
