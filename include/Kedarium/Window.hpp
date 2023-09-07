@@ -88,12 +88,12 @@ namespace kdr
 
     private:
       GLFWwindow* window;
-      unsigned int width;
-      unsigned int height;
-      std::string title;
+      unsigned int width{800};
+      unsigned int height{600};
+      std::string title{"Kedarium Engine"};
 
-      float lastTime;
-      float deltaTime;
+      float lastTime{(float)glfwGetTime()};
+      float deltaTime{0.f};
 
       /**
        * Updates the time difference between frames (delta time).

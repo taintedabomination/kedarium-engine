@@ -11,9 +11,6 @@ kdr::Window::Window(const WindowProps& windowProps)
   this->height = windowProps.height;
   this->title = windowProps.title;
 
-  this->lastTime = glfwGetTime();
-  this->deltaTime = 0.f;
-
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

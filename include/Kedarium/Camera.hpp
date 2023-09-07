@@ -75,15 +75,17 @@ namespace kdr
       void updateMatrices(GLuint programId, std::string uniform);
 
     private:
-      glm::vec3 position;
-      glm::vec3 orientation {glm::vec3(0.f, 0.f, -1.f)};
-      glm::vec3 up {glm::vec3(0.f, 1.f, 0.f)};
+      glm::vec3 position{glm::vec3(0.f)};
+      glm::vec3 orientation{glm::vec3(0.f, 0.f, -1.f)};
+      glm::vec3 up{glm::vec3(0.f, 1.f, 0.f)};
 
-      float speed;
-      float fov;
-      float aspectRatio;
-      float near;
-      float far;
+      float speed{0.f};
+      float fov{0.f};
+      float aspectRatio{0.f};
+      float near{0.f};
+      float far{0.f};
+
+      bool mouseLocked{false};
   };
 }
 

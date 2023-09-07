@@ -17,6 +17,19 @@ const glm::vec3 kdr::Camera::getPosition() const
 
 void kdr::Camera::handleInputs(GLFWwindow* window, const float deltaTime)
 {
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+  {
+    this->mouseLocked = false;
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+  }
+  if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+  {
+    this->mouseLocked = true;
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+  }
+
+  if (!mouseLocked) return;
+
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
   {
     this->position += this->speed * deltaTime * this->orientation;
@@ -41,6 +54,11 @@ void kdr::Camera::handleInputs(GLFWwindow* window, const float deltaTime)
   {
     this->position += this->speed * deltaTime * this->up;
   }
+
+  int windowWidth;
+  int windowHeight;
+  glfwGetWindowSize(window, &windowWidth, &windowHeight);
+  glfwSetCursorPos(window, (double)windowWidth / 2, (double)windowHeight / 2);
 }
 
 void kdr::Camera::updateMatrices(GLuint programId, std::string uniform)
