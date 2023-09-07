@@ -1,5 +1,5 @@
-#ifndef WINDOW_HPP
-#define WINDOW_HPP
+#ifndef KDR_WINDOW_HPP
+#define KDR_WINDOW_HPP
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -35,8 +35,19 @@ namespace kdr
   class Window
   {
     public:
+      /**
+       * Constructs a Window object with the specified properties.
+       *
+       * @param windowProps The properties for configuring the window.
+       */
       Window(const WindowProps& windowProps);
 
+      /**
+       * GetS a pointer to the GLFW window associated with the object.
+       *
+       * @return A pointer to the GLFW window.
+       */
+      GLFWwindow* getWindow() const;
       /**
        * Gets the width of the window.
        * 
@@ -99,4 +110,4 @@ namespace kdr
   };
 }
 
-#endif // WINDOW_HPP
+#endif // KDR_WINDOW_HPP

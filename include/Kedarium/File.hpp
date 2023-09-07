@@ -1,5 +1,5 @@
-#ifndef FILE_HPP
-#define FILE_HPP
+#ifndef KDR_FILE_HPP
+#define KDR_FILE_HPP
 
 #include <fstream>
 #include <iostream>
@@ -20,4 +20,4 @@ namespace kdr
   }
 }
 
-#endif // FILE_HPP
+#endif // KDR_FILE_HPP

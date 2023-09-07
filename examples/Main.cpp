@@ -9,27 +9,66 @@
 #include "Kedarium/Core.hpp"
 #include "Kedarium/Window.hpp"
 #include "Kedarium/Graphics.hpp"
+#include "Kedarium/Camera.hpp"
 
 const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 const char*        WINDOW_TITLE  = "Kedarium Engine";
 
-const float CAMERA_FOV  = 45.f;
-const float CAMERA_NEAR = 0.1f;
-const float CAMERA_FAR  = 100.f;
+const glm::vec3 CAMERA_POS    = glm::vec3(0.f, 0.f, -5.f);
+const float     CAMERA_SPEED  = 10.f;
+const float     CAMERA_FOV    = 45.f;
+const float     CAMERA_ASPECT = (float)(WINDOW_WIDTH) / WINDOW_HEIGHT;
+const float     CAMERA_NEAR   = 0.1f;
+const float     CAMERA_FAR    = 100.f;
 
 GLfloat vertices[] = {
-  -0.5f,  -0.5f, 0.f, 1.f, 0.f, 0.f,
-   0.0f,  -0.5f, 0.f, 0.f, 1.f, 0.f,
-   0.5f,  -0.5f, 0.f, 0.f, 0.f, 1.f,
-  -0.25f,  0.0f, 0.f, 1.f, 1.f, 0.f,
-   0.25f,  0.0f, 0.f, 0.f, 1.f, 1.f,
-   0.0f,   0.5f, 0.f, 1.f, 0.f, 1.f,
+  -0.5f,  -0.5f,  0.5f,  1.f, 0.f, 0.f,
+   0.0f,  -0.5f,  0.5f,  0.f, 1.f, 0.f,
+   0.5f,  -0.5f,  0.5f,  0.f, 0.f, 1.f,
+  -0.5f,  -0.5f,  0.0f,  1.f, 1.f, 0.f,
+   0.0f,  -0.5f,  0.0f,  0.f, 1.f, 1.f,
+   0.5f,  -0.5f,  0.0f,  1.f, 0.f, 1.f,
+  -0.5f,  -0.5f, -0.5f,  1.f, 0.f, 0.f,
+   0.0f,  -0.5f, -0.5f,  0.f, 1.f, 0.f,
+   0.5f,  -0.5f, -0.5f,  0.f, 0.f, 1.f,
+  -0.25f,  0.0f,  0.25f, 1.f, 1.f, 0.f,
+   0.25f,  0.0f,  0.25f, 0.f, 1.f, 1.f,
+  -0.25f,  0.0f, -0.25f, 1.f, 0.f, 1.f,
+   0.25f,  0.0f, -0.25f, 1.f, 0.f, 0.f,
+   0.f,    0.5f,  0.f,   0.f, 1.f, 0.f,
 };
 GLuint indices[] = {
-  0, 1, 3,
-  1, 2, 4,
-  3, 4, 5,
+  1, 0, 4,
+  3, 4, 0,
+  2, 1, 5,
+  4, 5, 1,
+  4, 3, 7,
+  6, 7, 3,
+  5, 4, 8,
+  7, 8, 4,
+  0, 1, 9,
+  1, 4, 9,
+  4, 3, 9,
+  3, 0, 9,
+  1, 2, 10,
+  2, 5, 10,
+  5, 4, 10,
+  4, 1, 10,
+  3, 4, 11,
+  4, 7, 11,
+  7, 6, 11,
+  6, 3, 11,
+  4, 5, 12,
+  5, 8, 12,
+  8, 7, 12,
+  7, 4, 12,
+  10, 9, 12,
+  11, 12, 9,
+  9, 10, 13,
+  10, 12, 13,
+  12, 11, 13,
+  11, 9, 13,
 };
 
 class MyWindow : public kdr::Window
@@ -67,8 +106,14 @@ class MyWindow : public kdr::Window
       delete this->EBO1;
     }
 
+    void setCamera(kdr::Camera& camera)
+    {
+      this->mainCamera = &camera;
+    }
+
     void update()
     {
+      this->mainCamera->handleInputs(this->getWindow());
       this->testRotation += this->getDeltaTime() * 100.f;
     }
 
@@ -106,17 +151,29 @@ class MyWindow : public kdr::Window
     kdr::VBO* VBO1;
     kdr::EBO* EBO1;
 
+    kdr::Camera* mainCamera;
     float testRotation{0.f};
 };
 
 int main()
 {
   const kdr::WindowProps windowProps = kdr::WindowProps(
-    800,
-    600,
-    "Kedarium Engine"
+    WINDOW_WIDTH,
+    WINDOW_HEIGHT,
+    WINDOW_TITLE
   );
+  const kdr::CameraProps cameraProps = kdr::CameraProps(
+    CAMERA_POS,
+    CAMERA_SPEED,
+    CAMERA_FOV,
+    CAMERA_ASPECT,
+    CAMERA_NEAR,
+    CAMERA_FAR
+  );
+
   MyWindow myWindow(windowProps);
+  kdr::Camera myCamera(cameraProps);
+  myWindow.setCamera(myCamera);
 
   kdr::core::printEngineInfo();
   kdr::core::printVersionInfo();

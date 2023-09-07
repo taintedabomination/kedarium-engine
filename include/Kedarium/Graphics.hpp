@@ -1,5 +1,5 @@
-#ifndef GRAPHICS_HPP
-#define GRAPHICS_HPP
+#ifndef KDR_GRAPHICS_HPP
+#define KDR_GRAPHICS_HPP
 
 #include <GL/glew.h>
 #include <iostream>
@@ -152,4 +152,4 @@ namespace kdr
   };
 }
 
-#endif // GRAPHICS_HPP
+#endif // KDR_GRAPHICS_HPP

@@ -47,7 +47,13 @@ kdr::Window::Window(const WindowProps& windowProps)
   GLclampf alpha = 1.0f;
   glClearColor(red, green, blue, alpha);
 
+  glEnable(GL_DEPTH_TEST);
   glfwSetFramebufferSizeCallback(this->window, framebufferSizeCallback);
+}
+
+GLFWwindow* kdr::Window::getWindow() const
+{
+  return this->window;
 }
 
 const unsigned int kdr::Window::getWidth() const
@@ -81,7 +87,7 @@ void kdr::Window::_update()
 
 void kdr::Window::_render()
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   this->render();  
   glfwSwapBuffers(this->window);
 }
