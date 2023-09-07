@@ -2,6 +2,9 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Kedarium/Core.hpp"
 #include "Kedarium/Window.hpp"
@@ -10,6 +13,10 @@
 const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 const char*        WINDOW_TITLE  = "Kedarium Engine";
+
+const float CAMERA_FOV  = 45.f;
+const float CAMERA_NEAR = 0.1f;
+const float CAMERA_FAR  = 100.f;
 
 GLfloat vertices[] = {
   -0.5f,  -0.5f, 0.f, 1.f, 0.f, 0.f,
@@ -69,6 +76,26 @@ class MyWindow : public kdr::Window
     {
       this->defaultShader->Use();
       this->VAO1->Bind();
+
+      glm::mat4 model = glm::mat4(1.f);
+      glm::mat4 view = glm::mat4(1.f);
+      glm::mat4 proj = glm::mat4(1.f);
+
+      view = glm::translate(view, glm::vec3(0.f, 0.f, -5.f));
+      proj = glm::perspective(
+        glm::radians(CAMERA_FOV),
+        (float)(WINDOW_WIDTH) / WINDOW_HEIGHT,
+        CAMERA_NEAR,
+        CAMERA_FAR
+      );
+
+      GLint modelLoc = glGetUniformLocation(this->defaultShader->getID(), "model");
+      glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+      GLint viewLoc = glGetUniformLocation(this->defaultShader->getID(), "view");
+      glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+      GLint projLoc = glGetUniformLocation(this->defaultShader->getID(), "proj");
+      glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+
       glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
     }
 
