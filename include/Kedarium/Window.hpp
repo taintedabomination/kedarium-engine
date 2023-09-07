@@ -49,6 +49,12 @@ namespace kdr
        * @return The height of the window.
        */
       const unsigned int getHeight() const;
+      /**
+       * Gets the delta time of the window.
+       * 
+       * @return The delta time of the window.
+       */
+      const float getDeltaTime() const;
 
       /**
        * Main loop for the window.
@@ -75,14 +81,21 @@ namespace kdr
       unsigned int height;
       std::string title;
 
+      float lastTime;
+      float deltaTime;
+
+      /**
+       * Updates the time difference between frames (delta time).
+       */
+      void _updateDeltaTime();
       /**
        * Base function for updating the window.
        */
-      void baseUpdate();
+      void _update();
       /**
        * Base function for rendering the window.
        */
-      void baseRender();
+      void _render();
   };
 }
 

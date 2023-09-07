@@ -69,7 +69,7 @@ class MyWindow : public kdr::Window
 
     void update()
     {
-
+      this->testRotation += this->getDeltaTime() * 100.f;
     }
 
     void render()
@@ -81,6 +81,7 @@ class MyWindow : public kdr::Window
       glm::mat4 view = glm::mat4(1.f);
       glm::mat4 proj = glm::mat4(1.f);
 
+      model = glm::rotate(model, glm::radians(this->testRotation), glm::vec3(0.f, 1.f, 0.f));
       view = glm::translate(view, glm::vec3(0.f, 0.f, -5.f));
       proj = glm::perspective(
         glm::radians(CAMERA_FOV),
@@ -104,6 +105,8 @@ class MyWindow : public kdr::Window
     kdr::VAO* VAO1;
     kdr::VBO* VBO1;
     kdr::EBO* EBO1;
+
+    float testRotation{0.f};
 };
 
 int main()

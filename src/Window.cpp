@@ -11,6 +11,9 @@ kdr::Window::Window(const WindowProps& windowProps)
   this->height = windowProps.height;
   this->title = windowProps.title;
 
+  this->lastTime = glfwGetTime();
+  this->deltaTime = 0.f;
+
   glfwInit();
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -51,18 +54,32 @@ const unsigned int kdr::Window::getWidth() const
 {
   return this->width;
 }
+
 const unsigned int kdr::Window::getHeight() const
 {
   return this->height;
 }
 
-void kdr::Window::baseUpdate()
+const float kdr::Window::getDeltaTime() const
+{
+  return this->deltaTime;
+}
+
+void kdr::Window::_updateDeltaTime()
+{
+  const float currentTime = glfwGetTime();
+  this->deltaTime = currentTime - lastTime;
+  this->lastTime = currentTime;
+}
+
+void kdr::Window::_update()
 {
   glfwPollEvents();
+  this->_updateDeltaTime();
   this->update();
 }
 
-void kdr::Window::baseRender()
+void kdr::Window::_render()
 {
   glClear(GL_COLOR_BUFFER_BIT);
   this->render();  
@@ -73,8 +90,8 @@ void kdr::Window::loop()
 {
   while (!glfwWindowShouldClose(window))
   {
-    this->baseUpdate();
-    this->baseRender();
+    this->_render();
+    this->_update();
   }
 }
 
