@@ -27,6 +27,7 @@ namespace kdr
 
     /**
      * Constructor for initializing camera properties.
+     *
      * @param position The position of the camera in 3D space.
      * @param speed The speed of the camera's movement.
      * @param fov The FOV of the camera.

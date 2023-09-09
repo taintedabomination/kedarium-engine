@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 
+#include "Camera.hpp"
 #include "Color.hpp"
 
 namespace kdr
@@ -68,7 +69,19 @@ namespace kdr
        * @return The delta time of the window.
        */
       const float getDeltaTime() const;
+      /**
+       * Gets the ID of the currently bound shader program.
+       *
+       * @return The ID of the currently bound shader program.
+       */
+      const GLuint getBoundShaderID() const;
 
+      /**
+       * Sets the camera to be used for rendering.
+       *
+       * @param camera The Camera object to set as the active camera.
+       */
+      void setCamera(kdr::Camera* camera);
       /**
        * Sets the clear color for the window.
        *
@@ -76,6 +89,12 @@ namespace kdr
        */
       void setClearColor(const kdr::color::RGBA& clearColor);
 
+      /**
+       * Binds a shader program for rendering.
+       *
+       * @param shaderID The ID of the shader program to bind.
+       */
+      void bindShaderID(const GLuint shaderID);
       /**
        * Main loop for the window.
        */
@@ -100,6 +119,8 @@ namespace kdr
       unsigned int width{800};
       unsigned int height{600};
       std::string title{"Kedarium Engine"};
+      kdr::Camera* camera{NULL};
+      GLuint boundShaderID{0};
 
       float lastTime{(float)glfwGetTime()};
       float deltaTime{0.f};
@@ -115,6 +136,10 @@ namespace kdr
        * Updates the time difference between frames (delta time).
        */
       void _updateDeltaTime();
+      /**
+       * Updates the camera's internal state.
+       */
+      void _updateCamera();
       /**
        * Base function for updating the window.
        */

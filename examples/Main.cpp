@@ -79,6 +79,8 @@ class MyWindow : public kdr::Window
     MyWindow(const kdr::WindowProps& windowProps) : kdr::Window(windowProps)
     {
       this->defaultShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
+      this->bindShaderID(this->defaultShader->getID());
+
       this->VAO1 = new kdr::VAO();
       this->VBO1 = new kdr::VBO(vertices, sizeof(vertices));
       this->EBO1 = new kdr::EBO(indices, sizeof(indices));
@@ -108,16 +110,7 @@ class MyWindow : public kdr::Window
       delete this->EBO1;
     }
 
-    void setCamera(kdr::Camera& camera)
-    {
-      this->mainCamera = &camera;
-    }
-
-    void update()
-    {
-      this->mainCamera->handleInputs(this->getWindow(), this->getDeltaTime());
-      this->mainCamera->updateMatrices(this->defaultShader->getID(), "cameraMatrix");
-    }
+    void update(){}
 
     void render()
     {
@@ -132,8 +125,6 @@ class MyWindow : public kdr::Window
     kdr::VAO* VAO1;
     kdr::VBO* VBO1;
     kdr::EBO* EBO1;
-
-    kdr::Camera* mainCamera;
 };
 
 int main()
@@ -162,7 +153,7 @@ int main()
   MyWindow myWindow(windowProps);
   kdr::Camera myCamera(cameraProps);
 
-  myWindow.setCamera(myCamera);
+  myWindow.setCamera(&myCamera);
   myWindow.setClearColor(clearColor);
 
   kdr::core::printEngineInfo();

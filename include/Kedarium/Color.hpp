@@ -6,6 +6,30 @@ namespace kdr
   namespace color
   {
     /**
+     * Represents a color in RGB (Red, Green, Blue) format.
+     */
+    struct RGB
+    {
+      float red;
+      float green;
+      float blue;
+
+      /**
+       * Constructor for creating an RGB color.
+       *
+       * @param red The red component of the color (0.0 - 1.0).
+       * @param green The green component of the color (0.0 - 1.0).
+       * @param blue The blue component of the color (0.0 - 1.0).
+       */
+      RGB(
+        const float red,
+        const float green,
+        const float blue
+      ) : red(red), green(green), blue(blue)
+      {};
+    };
+
+    /**
      * Represents a color in RGBA (Red, Green, Blue, Alpha) format.
      */
     struct RGBA
@@ -18,10 +42,10 @@ namespace kdr
       /**
        * Constructor for creating an RGBA color.
        *
-       * @param red The red component of the color.
-       * @param green The green component of the color.
-       * @param blue The blue component of the color.
-       * @param alpha The alpha (transparency) component of the color.
+       * @param red The red component of the color (0.0 - 1.0).
+       * @param green The green component of the color (0.0 - 1.0).
+       * @param blue The blue component of the color (0.0 - 1.0).
+       * @param alpha The alpha (transparency) component of the color (0.0 - 1.0).
        */
       RGBA(
         const float red,

@@ -64,6 +64,16 @@ const float kdr::Window::getDeltaTime() const
   return this->deltaTime;
 }
 
+const GLuint kdr::Window::getBoundShaderID() const
+{
+  return this->boundShaderID;
+}
+
+void kdr::Window::setCamera(kdr::Camera* camera)
+{
+  this->camera = camera;
+}
+
 void kdr::Window::setClearColor(const kdr::color::RGBA& clearColor)
 {
   this->clearColor = clearColor;
@@ -82,10 +92,19 @@ void kdr::Window::_updateDeltaTime()
   this->lastTime = currentTime;
 }
 
+void kdr::Window::_updateCamera()
+{
+  if (this->camera == NULL || this->boundShaderID == 0) return;
+
+  this->camera->handleInputs(this->getWindow(), this->getDeltaTime());
+  this->camera->updateMatrices(this->boundShaderID, "cameraMatrix");
+}
+
 void kdr::Window::_update()
 {
   glfwPollEvents();
   this->_updateDeltaTime();
+  this->_updateCamera();
   this->update();
 }
 
@@ -96,9 +115,14 @@ void kdr::Window::_render()
   glfwSwapBuffers(this->window);
 }
 
+void kdr::Window::bindShaderID(const GLuint shaderID)
+{
+  this->boundShaderID = shaderID;
+}
+
 void kdr::Window::loop()
 {
-  while (!glfwWindowShouldClose(window))
+  while (!glfwWindowShouldClose(this->window))
   {
     this->_render();
     this->_update();
