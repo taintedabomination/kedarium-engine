@@ -31,6 +31,19 @@ void kdr::Camera::handleInputs(GLFWwindow* window, const float deltaTime)
 
   if (!mouseLocked) return;
 
+  if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+  {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+  }
+  if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
+  {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  }
+  if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
+  {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  }
+
   if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
   {
     this->position += this->speed * deltaTime * this->orientation;

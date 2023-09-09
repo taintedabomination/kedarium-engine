@@ -42,9 +42,11 @@ kdr::Window::Window(const WindowProps& windowProps)
   GLclampf green = 0.3f;
   GLclampf blue  = 0.3f;
   GLclampf alpha = 1.0f;
-  glClearColor(red, green, blue, alpha);
 
+  glClearColor(red, green, blue, alpha);
   glEnable(GL_DEPTH_TEST);
+  glPointSize(5.f);
+
   glfwSetFramebufferSizeCallback(this->window, framebufferSizeCallback);
 }
 
