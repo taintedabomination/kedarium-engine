@@ -10,6 +10,7 @@
 #include "Kedarium/Window.hpp"
 #include "Kedarium/Graphics.hpp"
 #include "Kedarium/Camera.hpp"
+#include "Kedarium/Color.hpp"
 
 const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
@@ -151,10 +152,18 @@ int main()
     CAMERA_FAR,
     CAMERA_SENSITIVITY
   );
+  const kdr::color::RGBA clearColor = kdr::color::RGBA(
+    0.0f,
+    0.3f,
+    0.3f,
+    1.0f
+  );
 
   MyWindow myWindow(windowProps);
   kdr::Camera myCamera(cameraProps);
+
   myWindow.setCamera(myCamera);
+  myWindow.setClearColor(clearColor);
 
   kdr::core::printEngineInfo();
   kdr::core::printVersionInfo();

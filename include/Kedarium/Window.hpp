@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+#include "Color.hpp"
+
 namespace kdr
 {
   /**
@@ -68,6 +70,13 @@ namespace kdr
       const float getDeltaTime() const;
 
       /**
+       * Sets the clear color for the window.
+       *
+       * @param clearColor The RGBA color to set as the clear color.
+       */
+      void setClearColor(const kdr::color::RGBA& clearColor);
+
+      /**
        * Main loop for the window.
        */
       void loop();
@@ -94,6 +103,13 @@ namespace kdr
 
       float lastTime{(float)glfwGetTime()};
       float deltaTime{0.f};
+
+      kdr::color::RGBA clearColor = kdr::color::RGBA(
+        0.f,
+        0.f,
+        0.f,
+        1.f
+      );
 
       /**
        * Updates the time difference between frames (delta time).

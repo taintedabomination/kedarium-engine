@@ -38,12 +38,6 @@ kdr::Window::Window(const WindowProps& windowProps)
     glfwTerminate();
   }
 
-  GLclampf red   = 0.0f;
-  GLclampf green = 0.3f;
-  GLclampf blue  = 0.3f;
-  GLclampf alpha = 1.0f;
-
-  glClearColor(red, green, blue, alpha);
   glEnable(GL_DEPTH_TEST);
   glPointSize(5.f);
 
@@ -68,6 +62,17 @@ const unsigned int kdr::Window::getHeight() const
 const float kdr::Window::getDeltaTime() const
 {
   return this->deltaTime;
+}
+
+void kdr::Window::setClearColor(const kdr::color::RGBA& clearColor)
+{
+  this->clearColor = clearColor;
+  glClearColor(
+    this->clearColor.red,
+    this->clearColor.green,
+    this->clearColor.blue,
+    this->clearColor.alpha
+  );
 }
 
 void kdr::Window::_updateDeltaTime()
