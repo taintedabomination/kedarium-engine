@@ -1,2 +1,1 @@
 #include "Kedarium/Color.hpp"
-

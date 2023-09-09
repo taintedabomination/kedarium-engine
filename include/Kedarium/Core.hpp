@@ -7,7 +7,7 @@
 
 namespace kdr
 {
-  namespace core
+  namespace Core
   {
     /**
      * Prints information about the engine.

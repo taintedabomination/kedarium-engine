@@ -1,6 +1,6 @@
 #include "Kedarium/File.hpp"
 
-std::string kdr::file::getContents(std::string path)
+std::string kdr::File::getContents(std::string path)
 {
   std::ifstream file(path);
 

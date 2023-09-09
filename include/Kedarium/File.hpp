@@ -7,7 +7,7 @@
 
 namespace kdr
 {
-  namespace file
+  namespace File
   {
     /**
      * Reads the contents of a file into a string.

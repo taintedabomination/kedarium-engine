@@ -3,8 +3,8 @@
 
 kdr::Shader::Shader(std::string vertexPath, std::string fragmentPath)
 {
-  std::string vertexShaderSource = kdr::file::getContents("resources/Shaders/default.vert");
-  std::string fragmentShaderSource = kdr::file::getContents("resources/Shaders/default.frag");
+  std::string vertexShaderSource = kdr::File::getContents("resources/Shaders/default.vert");
+  std::string fragmentShaderSource = kdr::File::getContents("resources/Shaders/default.frag");
 
   const char *vertexCStringSource = vertexShaderSource.c_str();
   const char *fragmentCStringSource = fragmentShaderSource.c_str();

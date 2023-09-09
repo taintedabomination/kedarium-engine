@@ -1,10 +1,4 @@
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <iostream>
-#include <string>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #include "Kedarium/Core.hpp"
 #include "Kedarium/Window.hpp"
@@ -143,7 +137,7 @@ int main()
     CAMERA_FAR,
     CAMERA_SENSITIVITY
   );
-  const kdr::color::RGBA clearColor = kdr::color::RGBA(
+  const kdr::Color::RGBA clearColor = kdr::Color::RGBA(
     0.0f,
     0.3f,
     0.3f,
@@ -156,8 +150,8 @@ int main()
   myWindow.setCamera(&myCamera);
   myWindow.setClearColor(clearColor);
 
-  kdr::core::printEngineInfo();
-  kdr::core::printVersionInfo();
+  kdr::Core::printEngineInfo();
+  kdr::Core::printVersionInfo();
 
   myWindow.loop();
   myWindow.close();

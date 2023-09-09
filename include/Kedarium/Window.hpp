@@ -87,7 +87,7 @@ namespace kdr
        *
        * @param clearColor The RGBA color to set as the clear color.
        */
-      void setClearColor(const kdr::color::RGBA& clearColor);
+      void setClearColor(const kdr::Color::RGBA& clearColor);
 
       /**
        * Binds a shader program for rendering.
@@ -125,7 +125,7 @@ namespace kdr
       float lastTime{(float)glfwGetTime()};
       float deltaTime{0.f};
 
-      kdr::color::RGBA clearColor = kdr::color::RGBA(
+      kdr::Color::RGBA clearColor = kdr::Color::RGBA(
         0.f,
         0.f,
         0.f,

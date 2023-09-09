@@ -1,9 +1,9 @@
-#ifndef COLOR_HPP
-#define COLOR_HPP
+#ifndef KDR_COLOR_HPP
+#define KDR_COLOR_HPP
 
 namespace kdr
 {
-  namespace color
+  namespace Color
   {
     /**
      * Represents a color in RGB (Red, Green, Blue) format.
@@ -58,5 +58,5 @@ namespace kdr
   }
 }
 
-#endif // COLOR_HPP
+#endif // KDR_COLOR_HPP
 

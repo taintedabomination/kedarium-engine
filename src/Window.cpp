@@ -74,7 +74,7 @@ void kdr::Window::setCamera(kdr::Camera* camera)
   this->camera = camera;
 }
 
-void kdr::Window::setClearColor(const kdr::color::RGBA& clearColor)
+void kdr::Window::setClearColor(const kdr::Color::RGBA& clearColor)
 {
   this->clearColor = clearColor;
   glClearColor(
