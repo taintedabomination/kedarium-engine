@@ -5,14 +5,14 @@ const char* ENGINE_VERSION = "0.1";
 const char* ENGINE_AUTHOR  = "taintedabomination";
 const char* ENGINE_LICENSE = "GNU GPLv3";
 
-void kdr::core::printEngineInfo()
+void kdr::Core::printEngineInfo()
 {
   std::cout << ENGINE_NAME << " " << ENGINE_VERSION << std::endl;
   std::cout << "Created by " << ENGINE_AUTHOR << std::endl;
   std::cout << "Licensed under " << ENGINE_LICENSE << std::endl;
 }
 
-void kdr::core::printVersionInfo()
+void kdr::Core::printVersionInfo()
 {
   std::cout << '\n';
   std::cout << "OpenGL: " << glGetString(GL_VERSION) << std::endl; 

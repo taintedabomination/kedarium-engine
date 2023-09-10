@@ -1,5 +1,5 @@
-#ifndef GRAPHICS_HPP
-#define GRAPHICS_HPP
+#ifndef KDR_GRAPHICS_HPP
+#define KDR_GRAPHICS_HPP
 
 #include <GL/glew.h>
 #include <iostream>
@@ -7,6 +7,9 @@
 
 namespace kdr
 {
+  /**
+   * Represents an OpenGL shader program.
+   */
   class Shader
   {
     public:
@@ -38,6 +41,9 @@ namespace kdr
       GLuint ID;
   };
 
+  /**
+   * Represents a Vertex Buffer Object (VBO) used in OpenGL rendering.
+   */
   class VBO
   {
     public:
@@ -73,6 +79,10 @@ namespace kdr
       GLuint ID;
   };
 
+
+  /**
+   * Represents an Element Buffer Object (EBO) used in OpenGL rendering.
+   */
   class EBO
   {
     public:
@@ -108,6 +118,9 @@ namespace kdr
       GLuint ID;
   };
 
+  /**
+   * Represents a Vertex Array Object (VAO) used in OpenGL rendering.
+   */
   class VAO
   {
     public:
@@ -150,6 +163,49 @@ namespace kdr
     private:
       GLuint ID;
   };
+
+  /**
+   * Represents a texture used in rendering.
+   */
+  class Texture
+  {
+    public:
+      /**
+       * Constructs a Texture object from an image file.
+       *
+       * @param path The path to the image file to load as a texture.
+       * @param type The type of texture (e.g., GL_TEXTURE_2D).
+       * @param slot The texture slot to which the texture will be bound.
+       * @param format The internal format of the texture data.
+       * @param pixelType The pixel data type of the texture.
+       */
+      Texture(std::string path, GLenum type, GLenum slot, GLenum format, GLenum pixelType);
+
+      /**
+       * Sets the texture unit for a shader uniform.
+       *
+       * @param shader The shader program in which to set the uniform.
+       * @param uniform The name of the uniform variable in the shader.
+       * @param unit The texture unit to bind the texture to.
+       */
+      void TextureUnit(kdr::Shader& shader, std::string uniform, GLuint unit);
+      /**
+       * Binds the texture for rendering.
+       */
+      void Bind();
+      /**
+       * Unbinds the currently bound texture.
+       */
+      void Unbind();
+      /**
+       * Deletes the texture object.
+       */
+      void Delete();
+
+    private:
+      GLuint ID;
+      GLenum type;
+  };
 }
 
-#endif // GRAPHICS_HPP
+#endif // KDR_GRAPHICS_HPP

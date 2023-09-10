@@ -8,4 +8,4 @@ add_executable(
 target_include_directories(example PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 # Libraries
-target_link_libraries(example PRIVATE Kedarium GL GLEW::GLEW glfw)
+target_link_libraries(example PRIVATE Kedarium GL GLEW::GLEW glfw glm png)

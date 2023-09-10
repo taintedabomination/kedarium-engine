@@ -38,43 +38,94 @@ kdr::Window::Window(const WindowProps& windowProps)
     glfwTerminate();
   }
 
-  GLclampf red   = 0.0f;
-  GLclampf green = 0.3f;
-  GLclampf blue  = 0.3f;
-  GLclampf alpha = 1.0f;
-  glClearColor(red, green, blue, alpha);
+  glEnable(GL_DEPTH_TEST);
+  glPointSize(5.f);
 
   glfwSetFramebufferSizeCallback(this->window, framebufferSizeCallback);
+}
+
+GLFWwindow* kdr::Window::getWindow() const
+{
+  return this->window;
 }
 
 const unsigned int kdr::Window::getWidth() const
 {
   return this->width;
 }
+
 const unsigned int kdr::Window::getHeight() const
 {
   return this->height;
 }
 
-void kdr::Window::baseUpdate()
+const float kdr::Window::getDeltaTime() const
+{
+  return this->deltaTime;
+}
+
+const GLuint kdr::Window::getBoundShaderID() const
+{
+  return this->boundShaderID;
+}
+
+void kdr::Window::setCamera(kdr::Camera* camera)
+{
+  this->camera = camera;
+}
+
+void kdr::Window::setClearColor(const kdr::Color::RGBA& clearColor)
+{
+  this->clearColor = clearColor;
+  glClearColor(
+    this->clearColor.red,
+    this->clearColor.green,
+    this->clearColor.blue,
+    this->clearColor.alpha
+  );
+}
+
+void kdr::Window::_updateDeltaTime()
+{
+  const float currentTime = glfwGetTime();
+  this->deltaTime = currentTime - lastTime;
+  this->lastTime = currentTime;
+}
+
+void kdr::Window::_updateCamera()
+{
+  if (this->camera == NULL || this->boundShaderID == 0) return;
+
+  this->camera->handleInputs(this->getWindow(), this->getDeltaTime());
+  this->camera->updateMatrices(this->boundShaderID, "cameraMatrix");
+}
+
+void kdr::Window::_update()
 {
   glfwPollEvents();
+  this->_updateDeltaTime();
+  this->_updateCamera();
   this->update();
 }
 
-void kdr::Window::baseRender()
+void kdr::Window::_render()
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   this->render();  
   glfwSwapBuffers(this->window);
 }
 
+void kdr::Window::bindShaderID(const GLuint shaderID)
+{
+  this->boundShaderID = shaderID;
+}
+
 void kdr::Window::loop()
 {
-  while (!glfwWindowShouldClose(window))
+  while (!glfwWindowShouldClose(this->window))
   {
-    this->baseUpdate();
-    this->baseRender();
+    this->_render();
+    this->_update();
   }
 }
 
