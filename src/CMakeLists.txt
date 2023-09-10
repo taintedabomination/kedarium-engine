@@ -7,6 +7,7 @@ add_library(
   Graphics.cpp
   Camera.cpp
   Color.cpp
+  Image.cpp
 )
 
 # Include Directory

@@ -5,12 +5,13 @@
 #include "Kedarium/Graphics.hpp"
 #include "Kedarium/Camera.hpp"
 #include "Kedarium/Color.hpp"
+#include "Kedarium/Image.hpp"
 
 const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 const char*        WINDOW_TITLE  = "Kedarium Engine";
 
-const glm::vec3 CAMERA_POS         = glm::vec3(0.f, 0.f, -5.f);
+const glm::vec3 CAMERA_POS         = glm::vec3(0.f, 0.f, 5.f);
 const float     CAMERA_SPEED       = 4.f;
 const float     CAMERA_FOV         = 45.f;
 const float     CAMERA_ASPECT      = (float)(WINDOW_WIDTH) / WINDOW_HEIGHT;
@@ -19,52 +20,16 @@ const float     CAMERA_FAR         = 100.f;
 const float     CAMERA_SENSITIVITY = 35.f;
 
 GLfloat vertices[] = {
-  -0.5f,  -0.5f,  0.5f,  1.f, 0.f, 0.f,
-   0.0f,  -0.5f,  0.5f,  0.f, 1.f, 0.f,
-   0.5f,  -0.5f,  0.5f,  0.f, 0.f, 1.f,
-  -0.5f,  -0.5f,  0.0f,  1.f, 1.f, 0.f,
-   0.0f,  -0.5f,  0.0f,  0.f, 1.f, 1.f,
-   0.5f,  -0.5f,  0.0f,  1.f, 0.f, 1.f,
-  -0.5f,  -0.5f, -0.5f,  1.f, 0.f, 0.f,
-   0.0f,  -0.5f, -0.5f,  0.f, 1.f, 0.f,
-   0.5f,  -0.5f, -0.5f,  0.f, 0.f, 1.f,
-  -0.25f,  0.0f,  0.25f, 1.f, 1.f, 0.f,
-   0.25f,  0.0f,  0.25f, 0.f, 1.f, 1.f,
-  -0.25f,  0.0f, -0.25f, 1.f, 0.f, 1.f,
-   0.25f,  0.0f, -0.25f, 1.f, 0.f, 0.f,
-   0.f,    0.5f,  0.f,   0.f, 1.f, 0.f,
+   0.5f, -0.5f, 0.f, 1.f, 1.f, 1.f, 1.f, 0.f,
+  -0.5f, -0.5f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f,
+   0.5f,  0.5f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f,
+  -0.5f,  0.5f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f,
+   0.5f,  0.5f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f,
+  -0.5f, -0.5f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f
 };
 GLuint indices[] = {
-  1, 0, 4,
-  3, 4, 0,
-  2, 1, 5,
-  4, 5, 1,
-  4, 3, 7,
-  6, 7, 3,
-  5, 4, 8,
-  7, 8, 4,
-  0, 1, 9,
-  1, 4, 9,
-  4, 3, 9,
-  3, 0, 9,
-  1, 2, 10,
-  2, 5, 10,
-  5, 4, 10,
-  4, 1, 10,
-  3, 4, 11,
-  4, 7, 11,
-  7, 6, 11,
-  6, 3, 11,
-  4, 5, 12,
-  5, 8, 12,
-  8, 7, 12,
-  7, 4, 12,
-  10, 9, 12,
-  11, 12, 9,
-  9, 10, 13,
-  10, 12, 13,
-  12, 11, 13,
-  11, 9, 13,
+  0, 1, 2,
+  3, 4, 5,
 };
 
 class MyWindow : public kdr::Window
@@ -75,6 +40,24 @@ class MyWindow : public kdr::Window
       this->defaultShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
       this->bindShaderID(this->defaultShader->getID());
 
+      int textureWidth;
+      int textureHeight;
+      unsigned char* data;
+      kdr::Image::loadFromPNG("resources/Textures/test.png", &data, textureWidth, textureHeight);
+
+      glGenTextures(1, &this->texture);
+      glActiveTexture(GL_TEXTURE0);
+      glBindTexture(GL_TEXTURE_2D, this->texture);
+
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+      this->defaultShader->Use();
+      GLuint tex0Location = glGetUniformLocation(this->defaultShader->getID(), "tex0");
+      glUniform1i(tex0Location, 0);
+
       this->VAO1 = new kdr::VAO();
       this->VBO1 = new kdr::VBO(vertices, sizeof(vertices));
       this->EBO1 = new kdr::EBO(indices, sizeof(indices));
@@ -83,8 +66,9 @@ class MyWindow : public kdr::Window
       this->VBO1->Bind();
       this->EBO1->Bind();
 
-      this->VAO1->LinkAttrib(*this->VBO1, 0, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(0));
-      this->VAO1->LinkAttrib(*this->VBO1, 1, 3, GL_FLOAT, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+      this->VAO1->LinkAttrib(*this->VBO1, 0, 3, GL_FLOAT, 8 * sizeof(GLfloat), (void*)(0));
+      this->VAO1->LinkAttrib(*this->VBO1, 1, 3, GL_FLOAT, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+      this->VAO1->LinkAttrib(*this->VBO1, 2, 2, GL_FLOAT, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
 
       this->VAO1->Unbind();
       this->VBO1->Unbind();
@@ -97,6 +81,7 @@ class MyWindow : public kdr::Window
       this->VBO1->Delete();
       this->EBO1->Delete();
       this->defaultShader->Delete();
+      glDeleteTextures(1, &this->texture);
 
       delete this->defaultShader;
       delete this->VAO1;
@@ -111,6 +96,7 @@ class MyWindow : public kdr::Window
       this->defaultShader->Use();
       this->VAO1->Bind();
 
+      glBindTexture(GL_TEXTURE_2D, this->texture);
       glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
     }
 
@@ -119,6 +105,7 @@ class MyWindow : public kdr::Window
     kdr::VAO* VAO1;
     kdr::VBO* VBO1;
     kdr::EBO* EBO1;
+    GLuint texture;
 };
 
 int main()
