@@ -1,5 +1,6 @@
 #include "Kedarium/Graphics.hpp"
 #include "Kedarium/File.hpp"
+#include "Kedarium/Image.hpp"
 
 kdr::Shader::Shader(std::string vertexPath, std::string fragmentPath)
 {
@@ -157,4 +158,45 @@ void kdr::VAO::Unbind()
 void kdr::VAO::Delete()
 {
   glDeleteVertexArrays(1, &this->ID);
+}
+
+kdr::Texture::Texture(std::string path, GLenum type, GLenum slot, GLenum format, GLenum pixelType)
+{
+  this->type = type;
+
+  int textureWidth;
+  int textureHeight;
+  unsigned char* data;
+  kdr::Image::loadFromPNG(path, &data, textureWidth, textureHeight);
+
+  glGenTextures(1, &this->ID);
+  glActiveTexture(slot);
+  glBindTexture(this->type, this->ID);
+
+  glTexParameteri(this->type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(this->type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+  glTexImage2D(this->type, 0, GL_RGBA, textureWidth, textureHeight, 0, format, pixelType, data);
+}
+
+void kdr::Texture::TextureUnit(kdr::Shader& shader, std::string uniform, GLuint unit)
+{
+  shader.Use();
+  GLuint tex0Location = glGetUniformLocation(shader.getID(), uniform.c_str());
+  glUniform1i(tex0Location, unit);
+}
+
+void kdr::Texture::Bind()
+{
+  glBindTexture(this->type, this->ID);
+}
+
+void kdr::Texture::Unbind()
+{
+  glBindTexture(this->type, 0);  
+}
+
+void kdr::Texture::Delete()
+{
+  glDeleteTextures(1, &this->ID);
 }

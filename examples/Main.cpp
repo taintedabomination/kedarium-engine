@@ -5,7 +5,6 @@
 #include "Kedarium/Graphics.hpp"
 #include "Kedarium/Camera.hpp"
 #include "Kedarium/Color.hpp"
-#include "Kedarium/Image.hpp"
 
 const unsigned int WINDOW_WIDTH  = 800;
 const unsigned int WINDOW_HEIGHT = 600;
@@ -40,23 +39,8 @@ class MyWindow : public kdr::Window
       this->defaultShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
       this->bindShaderID(this->defaultShader->getID());
 
-      int textureWidth;
-      int textureHeight;
-      unsigned char* data;
-      kdr::Image::loadFromPNG("resources/Textures/test.png", &data, textureWidth, textureHeight);
-
-      glGenTextures(1, &this->texture);
-      glActiveTexture(GL_TEXTURE0);
-      glBindTexture(GL_TEXTURE_2D, this->texture);
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-      this->defaultShader->Use();
-      GLuint tex0Location = glGetUniformLocation(this->defaultShader->getID(), "tex0");
-      glUniform1i(tex0Location, 0);
+      this->texture = new kdr::Texture("resources/Textures/tiles.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+      this->texture->TextureUnit(*this->defaultShader, "tex0", 0);
 
       this->VAO1 = new kdr::VAO();
       this->VBO1 = new kdr::VBO(vertices, sizeof(vertices));
@@ -81,12 +65,13 @@ class MyWindow : public kdr::Window
       this->VBO1->Delete();
       this->EBO1->Delete();
       this->defaultShader->Delete();
-      glDeleteTextures(1, &this->texture);
+      this->texture->Delete();
 
       delete this->defaultShader;
       delete this->VAO1;
       delete this->VBO1;
       delete this->EBO1;
+      delete this->texture;
     }
 
     void update(){}
@@ -95,8 +80,8 @@ class MyWindow : public kdr::Window
     {
       this->defaultShader->Use();
       this->VAO1->Bind();
+      this->texture->Bind();
 
-      glBindTexture(GL_TEXTURE_2D, this->texture);
       glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
     }
 
@@ -105,7 +90,7 @@ class MyWindow : public kdr::Window
     kdr::VAO* VAO1;
     kdr::VBO* VBO1;
     kdr::EBO* EBO1;
-    GLuint texture;
+    kdr::Texture* texture;
 };
 
 int main()

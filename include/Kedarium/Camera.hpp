@@ -48,6 +48,9 @@ namespace kdr
     {};
   };
 
+  /**
+   * Represents a camera used for rendering.
+   */
   class Camera
   {
     public:

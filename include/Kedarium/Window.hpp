@@ -35,6 +35,9 @@ namespace kdr
     {};
   };
 
+  /**
+   * Represents an application window for rendering.
+   */
   class Window
   {
     public:
