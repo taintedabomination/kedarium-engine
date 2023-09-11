@@ -39,7 +39,7 @@ kdr::Window::Window(const WindowProps& windowProps)
   }
 
   glEnable(GL_DEPTH_TEST);
-  glPointSize(5.f);
+  glPointSize(10.f);
 
   glfwSetFramebufferSizeCallback(this->window, framebufferSizeCallback);
 }

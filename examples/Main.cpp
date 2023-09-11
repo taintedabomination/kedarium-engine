@@ -19,16 +19,56 @@ const float     CAMERA_FAR         = 100.f;
 const float     CAMERA_SENSITIVITY = 35.f;
 
 GLfloat vertices[] = {
-   0.5f, -0.5f, 0.f, 1.f, 1.f, 1.f, 1.f, 0.f,
-  -0.5f, -0.5f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f,
-   0.5f,  0.5f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f,
-  -0.5f,  0.5f, 0.f, 1.f, 1.f, 1.f, 0.f, 1.f,
-   0.5f,  0.5f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f,
-  -0.5f, -0.5f, 0.f, 1.f, 1.f, 1.f, 0.f, 0.f
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
+  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
+   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
+   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
+  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
 };
 GLuint indices[] = {
   0, 1, 2,
   3, 4, 5,
+  6, 7, 8,
+  9, 10, 11,
+  12, 13, 14,
+  15, 16, 17,
+  18, 19, 20,
+  21, 22, 23,
+  24, 25, 26,
+  27, 28, 29,
+  30, 31, 32,
+  33, 34, 35
 };
 
 class MyWindow : public kdr::Window
@@ -39,7 +79,7 @@ class MyWindow : public kdr::Window
       this->defaultShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
       this->bindShaderID(this->defaultShader->getID());
 
-      this->texture = new kdr::Texture("resources/Textures/tiles.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+      this->texture = new kdr::Texture("resources/Textures/gold.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
       this->texture->TextureUnit(*this->defaultShader, "tex0", 0);
 
       this->VAO1 = new kdr::VAO();
@@ -110,9 +150,9 @@ int main()
     CAMERA_SENSITIVITY
   );
   const kdr::Color::RGBA clearColor = kdr::Color::RGBA(
-    0.0f,
-    0.3f,
-    0.3f,
+    0.5f,
+    0.8f,
+    1.0f,
     1.0f
   );
 
