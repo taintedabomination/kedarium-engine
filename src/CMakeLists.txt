@@ -9,6 +9,7 @@ add_library(
   Color.cpp
   Image.cpp
   Light.cpp
+  Solids.cpp
 )
 
 # Include Directory
