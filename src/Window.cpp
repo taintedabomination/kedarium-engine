@@ -97,7 +97,8 @@ void kdr::Window::_updateCamera()
   if (this->camera == NULL || this->boundShaderID == 0) return;
 
   this->camera->handleInputs(this->getWindow(), this->getDeltaTime());
-  this->camera->updateMatrices(this->boundShaderID, "cameraMatrix");
+  this->camera->updateMatrix();
+  this->camera->useMatrix(this->boundShaderID, "cameraMatrix");
 }
 
 void kdr::Window::_update()

@@ -76,17 +76,22 @@ namespace kdr
        */
       void handleInputs(GLFWwindow* window, const float deltaTime);
       /**
-       * Updates matrices and set them as a uniform in a shader program.
+       * Update the camera's internal matrix.
+       */
+      void updateMatrix();
+      /**
+       * Set the camera's matrix as a uniform in a shader program.
        *
        * @param programId The ID of the shader program to which the uniforms should be set.
        * @param uniform The name of the uniform variable in the shader program.
        */
-      void updateMatrices(GLuint programId, std::string uniform);
+      void useMatrix(GLuint programId, std::string uniform);
 
     private:
       glm::vec3 position{glm::vec3(0.f)};
       glm::vec3 orientation{glm::vec3(0.f, 0.f, -1.f)};
       glm::vec3 up{glm::vec3(0.f, 1.f, 0.f)};
+      glm::mat4 cameraMatrix{glm::mat4(1.f)};
 
       float speed{0.f};
       float fov{0.f};

@@ -108,6 +108,8 @@ namespace kdr
       void close();
 
     protected:
+      kdr::Camera* camera{NULL};
+      
       /**
        * Update function (to be overridden by derived classes).
        */
@@ -122,7 +124,6 @@ namespace kdr
       unsigned int width{800};
       unsigned int height{600};
       std::string title{"Kedarium Engine"};
-      kdr::Camera* camera{NULL};
       GLuint boundShaderID{0};
 
       float lastTime{(float)glfwGetTime()};
