@@ -27,31 +27,44 @@ class MyWindow : public kdr::Window
     {
       this->cubeShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
 
-      this->texture = new kdr::Texture("resources/Textures/gold.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-      this->texture->TextureUnit(*this->cubeShader, "tex0", 0);
+      this->texture1 = new kdr::Texture("resources/Textures/gold.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+      this->texture1->TextureUnit(*this->cubeShader, "tex0", 0);
+      this->texture2 = new kdr::Texture("resources/Textures/diamond.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+      this->texture2->TextureUnit(*this->cubeShader, "tex0", 0);
+      this->texture3 = new kdr::Texture("resources/Textures/soulsand.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+      this->texture3->TextureUnit(*this->cubeShader, "tex0", 0);
 
       this->light = new kdr::Light(
-        glm::vec3(-3.f, 0.f, 0.f),
+        glm::vec3(0.f, 3.f, 0.f),
         glm::vec4(1.f, 1.f, 1.f, 1.f)
       );
-      this->cube = new kdr::Solids::Cube(
+      this->cube1 = new kdr::Solids::Cube(
+        glm::vec3(-2.f, 0.f, 0.f)
+      );
+      this->cube2 = new kdr::Solids::Cube(
         glm::vec3(0.f, 0.f, 0.f)
       );
-
-      this->cubeShader->Use();
-      this->cube->ApplyPosition(*this->cubeShader);
-      this->light->Use(*this->cubeShader);
+      this->cube3 = new kdr::Solids::Cube(
+        glm::vec3(2.f, 0.f, 0.f)
+      );
     };
 
     ~MyWindow()
     {
       this->cubeShader->Delete();
-      this->texture->Delete();
+      this->texture1->Delete();
+      this->texture2->Delete();
+      this->texture3->Delete();
 
       delete this->cubeShader;
-      delete this->cube;
+      delete this->cube1;
+      delete this->cube2;
+      delete this->cube3;
 
-      delete this->texture;
+      delete this->texture1;
+      delete this->texture2;
+      delete this->texture3;
+
       delete this->light;
     }
 
@@ -68,14 +81,41 @@ class MyWindow : public kdr::Window
       glUniform3f(cameraPositionLocation, cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
       this->camera->useMatrix(this->cubeShader->getID(), "cameraMatrix");
-      this->texture->Bind();
-      this->cube->Render(*this->cubeShader);
+      this->light->setColor(glm::vec4(
+        (sin(this->getTime() * 3.f) + 1.f) / 2.f,
+        (sin(this->getTime() * 2.f) + 1.f) / 2.f,
+        (sin(this->getTime() * 1.f) + 1.f) / 2.f,
+        1.f
+      ));
+      this->light->setPosition(glm::vec3(
+        sin(this->getTime() * 5.f) * 3.f,
+        3.f,
+        0.f
+      ));
+      this->light->Use(*this->cubeShader);
+
+      this->texture1->Bind();
+      this->cube1->ApplyPosition(*this->cubeShader);
+      this->cube1->Render(*this->cubeShader);
+      this->texture2->Bind();
+      this->cube2->ApplyPosition(*this->cubeShader);
+      this->cube2->Render(*this->cubeShader);
+      this->texture3->Bind();
+      this->cube3->ApplyPosition(*this->cubeShader);
+      this->cube3->Render(*this->cubeShader);
     }
 
   private:
     kdr::Shader* cubeShader;
-    kdr::Solids::Cube* cube;
-    kdr::Texture* texture;
+
+    kdr::Solids::Cube* cube1;
+    kdr::Solids::Cube* cube2;
+    kdr::Solids::Cube* cube3;
+
+    kdr::Texture* texture1;
+    kdr::Texture* texture2;
+    kdr::Texture* texture3;
+
     kdr::Light* light;
 };
 

@@ -6,6 +6,16 @@ kdr::Light::Light(glm::vec3 position, glm::vec4 color)
   this->color = color;
 }
 
+void kdr::Light::setPosition(const glm::vec3 position)
+{
+  this->position = position;
+}
+
+void kdr::Light::setColor(const glm::vec4 color)
+{
+  this->color = color;
+}
+
 void kdr::Light::Use(kdr::Shader& shader)
 {
   shader.Use();

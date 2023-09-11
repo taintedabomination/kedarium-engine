@@ -22,6 +22,19 @@ namespace kdr {
       Light(glm::vec3 position, glm::vec4 color);
 
       /**
+       * Sets the position of the light source in 3D space.
+       *
+       * @param position The new position of the light source as a glm::vec3.
+       */
+      void setPosition(const glm::vec3 position);
+      /**
+       * Sets the color of the light source.
+       *
+       * @param color The new color of the light source as a glm::vec4 (RGBA).
+       */
+      void setColor(const glm::vec4 color);
+
+      /**
        * Activates the light source in a shader program.
        *
        * @param shader The shader program to which the light should be applied.

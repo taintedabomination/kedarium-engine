@@ -59,6 +59,11 @@ const unsigned int kdr::Window::getHeight() const
   return this->height;
 }
 
+const float kdr::Window::getTime() const
+{
+  return (float)glfwGetTime();
+}
+
 const float kdr::Window::getDeltaTime() const
 {
   return this->deltaTime;
