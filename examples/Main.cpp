@@ -19,42 +19,42 @@ const float     CAMERA_FAR         = 100.f;
 const float     CAMERA_SENSITIVITY = 35.f;
 
 GLfloat cubeVertices[] = {
-   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
-  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
-   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
-   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
-   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
-   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
-  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
-  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
-  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
-  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
-   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,
-   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
-  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,
-  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,
-   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,  0.f,  0.f,  1.f, // Front
+  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  0.f,  0.f,  1.f, // Front
+   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  0.f,  0.f,  1.f, // Front
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,  0.f,  0.f,  1.f, // Front
+   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  0.f,  0.f,  1.f, // Front
+  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  0.f,  0.f,  1.f, // Front
+   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,  1.f,  0.f,  0.f, // Right
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  1.f,  0.f,  0.f, // Right
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  1.f,  0.f,  0.f, // Right
+   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,  1.f,  0.f,  0.f, // Right
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  1.f,  0.f,  0.f, // Right
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  1.f,  0.f,  0.f, // Right
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,  0.f,  0.f, -1.f, // Back
+   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  0.f,  0.f, -1.f, // Back
+  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  0.f,  0.f, -1.f, // Back
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,  0.f,  0.f, -1.f, // Back
+  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  0.f,  0.f, -1.f, // Back
+   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  0.f,  0.f, -1.f, // Back
+  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f, -1.f,  0.f,  0.f, // Left
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f, -1.f,  0.f,  0.f, // Left
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f, -1.f,  0.f,  0.f, // Left
+  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f, -1.f,  0.f,  0.f, // Left
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 1.f, -1.f,  0.f,  0.f, // Left
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 0.f, -1.f,  0.f,  0.f, // Left
+   0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,  0.f,  1.f,  0.f, // Top
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  0.f,  1.f,  0.f, // Top
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  0.f,  1.f,  0.f, // Top
+  -0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,  0.f,  1.f,  0.f, // Top
+   0.5f,  0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  0.f,  1.f,  0.f, // Top
+  -0.5f,  0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  0.f,  1.f,  0.f, // Top
+  -0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 1.f, 0.f,  0.f, -1.f,  0.f, // Bottom
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  0.f, -1.f,  0.f, // Bottom
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  0.f, -1.f,  0.f, // Bottom
+   0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 0.f, 1.f,  0.f, -1.f,  0.f, // Bottom
+  -0.5f, -0.5f, -0.5f, 1.f, 1.f, 1.f, 1.f, 1.f,  0.f, -1.f,  0.f, // Bottom
+   0.5f, -0.5f,  0.5f, 1.f, 1.f, 1.f, 0.f, 0.f,  0.f, -1.f,  0.f, // Bottom
 };
 GLuint cubeIndices[] = {
   0, 1, 2,
@@ -132,10 +132,17 @@ class MyWindow : public kdr::Window
       this->cubeShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
       this->lightShader = new kdr::Shader("resources/Shaders/light.vert", "resources/Shaders/light.frag");
 
-      this->bindShaderID(this->cubeShader->getID());
-
       this->texture = new kdr::Texture("resources/Textures/gold.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
       this->texture->TextureUnit(*this->cubeShader, "tex0", 0);
+
+      glm::vec3 cubePos = glm::vec3(0.0f, 0.0f, 0.0f);
+      glm::mat4 cubeModel = glm::mat4(1.0f);
+      cubeModel = glm::translate(cubeModel, cubePos);
+
+      glm::vec3 lightPos = glm::vec3(-3.0f, 0.0f, 0.0f);
+      glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.f);
+      glm::mat4 lightModel = glm::mat4(1.0f);
+      lightModel = glm::translate(lightModel, lightPos);
 
       this->CubeVAO = new kdr::VAO();
       this->CubeVBO = new kdr::VBO(cubeVertices, sizeof(cubeVertices));
@@ -145,17 +152,20 @@ class MyWindow : public kdr::Window
       this->CubeVBO->Bind();
       this->CubeEBO->Bind();
 
-      this->CubeVAO->LinkAttrib(*this->CubeVBO, 0, 3, GL_FLOAT, 8 * sizeof(GLfloat), (void*)(0));
-      this->CubeVAO->LinkAttrib(*this->CubeVBO, 1, 3, GL_FLOAT, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-      this->CubeVAO->LinkAttrib(*this->CubeVBO, 2, 2, GL_FLOAT, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
-
-      glm::vec3 cubePos = glm::vec3(0.0f, 0.0f, 0.0f);
-      glm::mat4 cubeModel = glm::mat4(1.0f);
-      cubeModel = glm::translate(cubeModel, cubePos);
+      this->CubeVAO->LinkAttrib(*this->CubeVBO, 0, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(0));
+      this->CubeVAO->LinkAttrib(*this->CubeVBO, 1, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+      this->CubeVAO->LinkAttrib(*this->CubeVBO, 2, 2, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+      this->CubeVAO->LinkAttrib(*this->CubeVBO, 3, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(8 * sizeof(GLfloat)));
 
       this->cubeShader->Use();
+
       GLuint cubeModelLocation = glGetUniformLocation(this->cubeShader->getID(), "model");
+      GLuint cubeLightColorLocation = glGetUniformLocation(this->cubeShader->getID(), "lightColor");
+      GLuint cubeLightPositionLocation = glGetUniformLocation(this->cubeShader->getID(), "lightPosition");
+
       glUniformMatrix4fv(cubeModelLocation, 1, GL_FALSE, glm::value_ptr(cubeModel));
+      glUniform4f(cubeLightColorLocation, lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+      glUniform3f(cubeLightPositionLocation, lightPos.x, lightPos.y, lightPos.z);
 
       this->CubeVAO->Unbind();
       this->CubeVBO->Unbind();
@@ -171,14 +181,11 @@ class MyWindow : public kdr::Window
 
       this->LightVAO->LinkAttrib(*this->LightVBO, 0, 3, GL_FLOAT, 0, (void*)(0));
 
-      glm::vec3 lightPos = glm::vec3(-3.0f, 0.0f, 0.0f);
-      glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.f);
-      glm::mat4 lightModel = glm::mat4(1.0f);
-      lightModel = glm::translate(lightModel, lightPos);
-
       this->lightShader->Use();
+
       GLuint lightColorLocation = glGetUniformLocation(this->lightShader->getID(), "color");
       GLuint lightModelLocation = glGetUniformLocation(this->lightShader->getID(), "model");
+
       glUniformMatrix4fv(lightModelLocation, 1, GL_FALSE, glm::value_ptr(lightModel));
       glUniform4f(lightColorLocation, lightColor.x, lightColor.y, lightColor.z, lightColor.w);
       glUniform3f(lightModelLocation, lightPos.x, lightPos.y, lightPos.z);
@@ -221,14 +228,21 @@ class MyWindow : public kdr::Window
     {
       this->cubeShader->Use();
       this->bindShaderID(this->cubeShader->getID());
-      this->camera->useMatrix(this->getBoundShaderID(), "cameraMatrix");
+
+      GLuint cameraPositionLocation = glGetUniformLocation(this->cubeShader->getID(), "cameraPosition");
+      glm::vec3 cameraPosition = this->camera->getPosition();
+
+      glUniform3f(cameraPositionLocation, cameraPosition.x, cameraPosition.y, cameraPosition.z);
+
+      this->camera->useMatrix(this->cubeShader->getID(), "cameraMatrix");
       this->texture->Bind();
       this->CubeVAO->Bind();
       glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
       
       this->lightShader->Use();
       this->bindShaderID(this->lightShader->getID());
-      this->camera->useMatrix(this->getBoundShaderID(), "cameraMatrix");
+
+      this->camera->useMatrix(this->lightShader->getID(), "cameraMatrix");
       this->LightVAO->Bind();
       glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
     }
