@@ -107,3 +107,85 @@ void kdr::Solids::Cube::Render(kdr::Shader& shader)
   this->cubeVAO->Bind();
   glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
 }
+
+kdr::Solids::ColorCube::ColorCube(const glm::vec3 position, const float edgeLength) : kdr::Solids::Solid(position), color(0.f, 0.f, 0.f, 1.f)
+{
+  this->position = position;
+  this->color = color;
+
+  GLfloat cubeVertices[] = {
+     (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+     (edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
+    -(edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+     (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
+    -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+  };
+
+  this->cubeVAO = new kdr::VAO();
+  this->cubeVBO = new kdr::VBO(cubeVertices, sizeof(cubeVertices));
+  this->cubeEBO = new kdr::EBO(cubeIndices, sizeof(cubeIndices));
+
+  this->cubeVAO->Bind();
+  this->cubeVBO->Bind();
+  this->cubeEBO->Bind();
+
+  this->cubeVAO->LinkAttrib(*this->cubeVBO, 0, 3, GL_FLOAT, 0, (void*)(0));
+
+  this->cubeVAO->Unbind();
+  this->cubeVBO->Unbind();
+  this->cubeEBO->Unbind();
+}
+
+kdr::Solids::ColorCube::~ColorCube()
+{
+  delete this->cubeVAO;
+  delete this->cubeVBO;
+  delete this->cubeEBO;
+}
+
+void kdr::Solids::ColorCube::setColor(const kdr::Color::RGBA color)
+{
+  this->color = color;
+}
+
+void kdr::Solids::ColorCube::Render(kdr::Shader& shader)
+{
+  shader.Use();
+  this->cubeVAO->Bind();
+
+  GLuint lightColorLocation = glGetUniformLocation(shader.getID(), "color");
+  glUniform4f(lightColorLocation, this->color.red, this->color.green, this->color.blue, this->color.alpha);
+
+  glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
+}

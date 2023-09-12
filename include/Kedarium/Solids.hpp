@@ -7,6 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Graphics.hpp"
+#include "Color.hpp"
 
 namespace kdr
 {
@@ -53,6 +54,7 @@ namespace kdr
          * Constructs a Cube object with the specified position.
          *
          * @param position The position of the cube in 3D space.
+         * @param edgeLength The edge length of the Cube.
          */
         Cube(const glm::vec3 position, const float edgeLength);
         /**
@@ -71,6 +73,43 @@ namespace kdr
         kdr::VAO* cubeVAO;
         kdr::VBO* cubeVBO;
         kdr::EBO* cubeEBO;
+    };
+
+    class ColorCube : public Solid
+    {
+      public:
+        /**
+         * Constructs a ColorCube object with the specified position.
+         *
+         * @param position The position of the cube in 3D space.
+         * @param edgeLength The edge length of the ColorCube.
+         */
+        ColorCube(const glm::vec3 position, const float edgeLength);
+        /**
+         * Destructor for the ColorCube object.
+         */
+        virtual ~ColorCube();
+
+        /**
+         * Sets the color of the colored cube.
+         *
+         * @param color The new color of the colored cube as a kdr::Color::RGBA.
+         */
+        void setColor(const kdr::Color::RGBA color);
+
+        /**
+         * Renders the colored cube using a shader program.
+         *
+         * @param shader The shader program used for rendering.
+         */
+        void Render(kdr::Shader& shader);
+
+      private:
+        kdr::VAO* cubeVAO;
+        kdr::VBO* cubeVBO;
+        kdr::EBO* cubeEBO;
+
+        kdr::Color::RGBA color;
     };
   }
 }

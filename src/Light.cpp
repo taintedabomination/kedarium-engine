@@ -1,6 +1,6 @@
 #include "Kedarium/Light.hpp"
 
-kdr::Light::Light(glm::vec3 position, glm::vec4 color)
+kdr::Light::Light(const glm::vec3 position, const kdr::Color::RGBA color) : color(1.f, 1.f, 1.f, 1.f)
 {
   this->position = position;
   this->color = color;
@@ -11,7 +11,7 @@ void kdr::Light::setPosition(const glm::vec3 position)
   this->position = position;
 }
 
-void kdr::Light::setColor(const glm::vec4 color)
+void kdr::Light::setColor(const kdr::Color::RGBA color)
 {
   this->color = color;
 }
@@ -28,7 +28,7 @@ void kdr::Light::Use(kdr::Shader& shader)
   GLuint lightColorLocation = glGetUniformLocation(shader.getID(), "lightColor");
   GLuint lightModelLocation = glGetUniformLocation(shader.getID(), "lightPosition");
 
-  glUniform4f(lightColorLocation, this->color.x, this->color.y, this->color.z, this->color.w);
+  glUniform4f(lightColorLocation, this->color.red, this->color.green, this->color.blue, this->color.alpha);
   glUniform3f(lightModelLocation, this->position.x, this->position.y, this->position.z);
 }
 

@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 #include "Graphics.hpp"
+#include "Color.hpp"
 #include "Solids.hpp"
 
 namespace kdr {
@@ -20,7 +21,7 @@ namespace kdr {
        * @param position The position of the light source in 3D space.
        * @param color The color of the light source as a glm::vec4 (RGBA).
        */
-      Light(glm::vec3 position, glm::vec4 color);
+      Light(const glm::vec3 position, const kdr::Color::RGBA color);
 
       /**
        * Sets the position of the light source in 3D space.
@@ -31,9 +32,9 @@ namespace kdr {
       /**
        * Sets the color of the light source.
        *
-       * @param color The new color of the light source as a glm::vec4 (RGBA).
+       * @param color The new color of the light source as a kdr::Color::RGBA.
        */
-      void setColor(const glm::vec4 color);
+      void setColor(const kdr::Color::RGBA color);
       /**
        * Sets the solid object associated with the light source.
        *
@@ -56,7 +57,7 @@ namespace kdr {
 
     private:
       glm::vec3 position;
-      glm::vec4 color;
+      kdr::Color::RGBA color;
       kdr::Solids::Solid* solid;
   };
 }
