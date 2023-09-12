@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 #include "Graphics.hpp"
+#include "Solids.hpp"
 
 namespace kdr {
   /**
@@ -33,6 +34,12 @@ namespace kdr {
        * @param color The new color of the light source as a glm::vec4 (RGBA).
        */
       void setColor(const glm::vec4 color);
+      /**
+       * Sets the solid object associated with the light source.
+       *
+       * @param solid A pointer to the solid object to be associated with the light.
+       */
+      void setSolid(kdr::Solids::Solid* solid);
 
       /**
        * Activates the light source in a shader program.
@@ -40,10 +47,17 @@ namespace kdr {
        * @param shader The shader program to which the light should be applied.
        */
       void Use(kdr::Shader& shader);
+      /**
+       * Renders the light source as a solid object using a shader program.
+       *
+       * @param shader The shader program used for rendering the light as a solid object.
+       */
+      void RenderSolid(kdr::Shader& shader);
 
     private:
       glm::vec3 position;
       glm::vec4 color;
+      kdr::Solids::Solid* solid;
   };
 }
 

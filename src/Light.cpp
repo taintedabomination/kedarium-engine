@@ -16,6 +16,11 @@ void kdr::Light::setColor(const glm::vec4 color)
   this->color = color;
 }
 
+void kdr::Light::setSolid(kdr::Solids::Solid* solid)
+{
+  this->solid = solid;
+}
+
 void kdr::Light::Use(kdr::Shader& shader)
 {
   shader.Use();
@@ -25,4 +30,12 @@ void kdr::Light::Use(kdr::Shader& shader)
 
   glUniform4f(lightColorLocation, this->color.x, this->color.y, this->color.z, this->color.w);
   glUniform3f(lightModelLocation, this->position.x, this->position.y, this->position.z);
+}
+
+void kdr::Light::RenderSolid(kdr::Shader& shader)
+{
+  if (this->solid == NULL) return;
+
+  this->solid->ApplyPosition(shader);
+  this->solid->Render(shader);
 }
