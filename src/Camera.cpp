@@ -97,7 +97,7 @@ void kdr::Camera::handleInputs(GLFWwindow* window, const float deltaTime)
   glfwSetCursorPos(window, (double)windowWidth / 2, (double)windowHeight / 2);
 }
 
-void kdr::Camera::updateMatrices(GLuint programId, std::string uniform)
+void kdr::Camera::updateMatrix()
 {
   glm::mat4 view = glm::mat4(1.f);
   glm::mat4 proj = glm::mat4(1.f);
@@ -110,6 +110,11 @@ void kdr::Camera::updateMatrices(GLuint programId, std::string uniform)
     this->far
   );
 
+  this->cameraMatrix = proj * view;
+}
+
+void kdr::Camera::useMatrix(GLuint programId, std::string uniform)
+{
   GLint uniformLoc = glGetUniformLocation(programId, uniform.c_str());
-  glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj * view));
+  glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(this->cameraMatrix));
 }

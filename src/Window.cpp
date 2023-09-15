@@ -39,7 +39,7 @@ kdr::Window::Window(const WindowProps& windowProps)
   }
 
   glEnable(GL_DEPTH_TEST);
-  glPointSize(5.f);
+  glPointSize(10.f);
 
   glfwSetFramebufferSizeCallback(this->window, framebufferSizeCallback);
 }
@@ -57,6 +57,11 @@ const unsigned int kdr::Window::getWidth() const
 const unsigned int kdr::Window::getHeight() const
 {
   return this->height;
+}
+
+const float kdr::Window::getTime() const
+{
+  return (float)glfwGetTime();
 }
 
 const float kdr::Window::getDeltaTime() const
@@ -97,7 +102,8 @@ void kdr::Window::_updateCamera()
   if (this->camera == NULL || this->boundShaderID == 0) return;
 
   this->camera->handleInputs(this->getWindow(), this->getDeltaTime());
-  this->camera->updateMatrices(this->boundShaderID, "cameraMatrix");
+  this->camera->updateMatrix();
+  this->camera->useMatrix(this->boundShaderID, "cameraMatrix");
 }
 
 void kdr::Window::_update()

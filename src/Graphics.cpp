@@ -4,8 +4,8 @@
 
 kdr::Shader::Shader(std::string vertexPath, std::string fragmentPath)
 {
-  std::string vertexShaderSource = kdr::File::getContents("resources/Shaders/default.vert");
-  std::string fragmentShaderSource = kdr::File::getContents("resources/Shaders/default.frag");
+  std::string vertexShaderSource = kdr::File::getContents(vertexPath);
+  std::string fragmentShaderSource = kdr::File::getContents(fragmentPath);
 
   const char *vertexCStringSource = vertexShaderSource.c_str();
   const char *fragmentCStringSource = fragmentShaderSource.c_str();
@@ -26,7 +26,7 @@ kdr::Shader::Shader(std::string vertexPath, std::string fragmentPath)
   if (!success)
   {
     glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-    std::cerr << "Failed to compile the vertex shader!" << std::endl;
+    std::cerr << "Failed to compile the vertex shader (" << vertexPath << ")!" << std::endl;
     std::cerr << "Error: " << infoLog << std::endl;
   }
 
@@ -34,7 +34,7 @@ kdr::Shader::Shader(std::string vertexPath, std::string fragmentPath)
   if (!success)
   {
     glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-    std::cerr << "Failed to compile the fragment shader!" << std::endl;
+    std::cerr << "Failed to compile the fragment shader (" << fragmentPath << ")!" << std::endl;
     std::cerr << "Error: " << infoLog << std::endl;
   }
 

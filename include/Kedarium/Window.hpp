@@ -67,6 +67,12 @@ namespace kdr
        */
       const unsigned int getHeight() const;
       /**
+       * Gets the current time in seconds.
+       *
+       * @return The current time in seconds as a floating-point value.
+       */
+      const float getTime() const;
+      /**
        * Gets the delta time of the window.
        * 
        * @return The delta time of the window.
@@ -108,6 +114,8 @@ namespace kdr
       void close();
 
     protected:
+      kdr::Camera* camera{NULL};
+      
       /**
        * Update function (to be overridden by derived classes).
        */
@@ -122,7 +130,6 @@ namespace kdr
       unsigned int width{800};
       unsigned int height{600};
       std::string title{"Kedarium Engine"};
-      kdr::Camera* camera{NULL};
       GLuint boundShaderID{0};
 
       float lastTime{(float)glfwGetTime()};
