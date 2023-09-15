@@ -24,6 +24,13 @@ namespace kdr {
       Light(const glm::vec3 position, const kdr::Color::RGBA color);
 
       /**
+       * Gets the color of the light source.
+       *
+       * @return The color of the light source as a kdr::Color::RGBA.
+       */
+      const kdr::Color::RGBA getColor() const;
+
+      /**
        * Sets the position of the light source in 3D space.
        *
        * @param position The new position of the light source as a glm::vec3.

@@ -1,7 +1,7 @@
 #include "Kedarium/Core.hpp"
 
 const char* ENGINE_NAME    = "Kedarium Engine";
-const char* ENGINE_VERSION = "0.1";
+const char* ENGINE_VERSION = "0.2";
 const char* ENGINE_AUTHOR  = "taintedabomination";
 const char* ENGINE_LICENSE = "GNU GPLv3";
 

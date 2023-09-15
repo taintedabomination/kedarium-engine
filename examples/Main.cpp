@@ -25,6 +25,7 @@ class MyWindow : public kdr::Window
   public:
     MyWindow(const kdr::WindowProps& windowProps) : kdr::Window(windowProps)
     {
+      this->planeShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
       this->cubeShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
       this->colorCubeShader = new kdr::Shader("resources/Shaders/colored.vert", "resources/Shaders/colored.frag");
 
@@ -35,6 +36,10 @@ class MyWindow : public kdr::Window
       this->texture3 = new kdr::Texture("resources/Textures/soulsand.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
       this->texture3->TextureUnit(*this->cubeShader, "tex0", 0);
 
+      this->basePlane = new kdr::Solids::Plane(
+        glm::vec3(0.f, -5.f, 0.f),
+        20.f
+      );
       this->light = new kdr::Light(
         glm::vec3(0.f, 3.f, 0.f),
         kdr::Color::RGBA(1.f, 1.f, 1.f, 1.f)
@@ -59,6 +64,7 @@ class MyWindow : public kdr::Window
 
     ~MyWindow()
     {
+      this->planeShader->Delete();
       this->cubeShader->Delete();
       this->colorCubeShader->Delete();
 
@@ -66,9 +72,11 @@ class MyWindow : public kdr::Window
       this->texture2->Delete();
       this->texture3->Delete();
 
+      delete this->basePlane;
       delete this->light;
       delete this->lightCube;
 
+      delete this->planeShader;
       delete this->cubeShader;
       delete this->colorCubeShader;
 
@@ -92,35 +100,19 @@ class MyWindow : public kdr::Window
 
       glUniform3f(cameraPositionLocation, cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
-      this->camera->useMatrix(this->cubeShader->getID(), "cameraMatrix");
-      this->light->setPosition(glm::vec3(
-        sin(this->getTime() * 5.f) * 2.5,
-        3.f,
-        0.f
-      ));
-      this->light->setColor(kdr::Color::RGBA(
-        (sin(this->getTime() * 3.f) + 1.f) / 2.f,
-        (sin(this->getTime() * 2.f) + 1.f) / 2.f,
-        (sin(this->getTime() * 1.f) + 1.f) / 2.f,
-        1.f
-      ));
-      this->lightCube->setColor(kdr::Color::RGBA(
-        (sin(this->getTime() * 3.f) + 1.f) / 2.f,
-        (sin(this->getTime() * 2.f) + 1.f) / 2.f,
-        (sin(this->getTime() * 1.f) + 1.f) / 2.f,
-        1.f
-      ));
-      this->lightCube->setPosition(glm::vec3(
-        sin(this->getTime() * 5.f) * 2.f,
-        3.f,
-        0.f
-      ));
+      this->lightCube->setColor(this->light->getColor());
+      this->light->Use(*this->planeShader);
       this->light->Use(*this->cubeShader);
       this->light->setSolid(this->lightCube);
 
       this->texture1->Unbind();
       this->texture2->Unbind();
       this->texture3->Unbind();
+
+      this->planeShader->Use();
+      this->texture1->Bind();
+      this->camera->useMatrix(this->planeShader->getID(), "cameraMatrix");
+      this->basePlane->Render(*this->planeShader);
 
       this->colorCubeShader->Use();
       this->camera->useMatrix(this->colorCubeShader->getID(), "cameraMatrix");
@@ -131,20 +123,19 @@ class MyWindow : public kdr::Window
       this->camera->useMatrix(this->cubeShader->getID(), "cameraMatrix");
 
       this->texture1->Bind();
-      this->cube1->ApplyPosition(*this->cubeShader);
       this->cube1->Render(*this->cubeShader);
       this->texture2->Bind();
-      this->cube2->ApplyPosition(*this->cubeShader);
       this->cube2->Render(*this->cubeShader);
       this->texture3->Bind();
-      this->cube3->ApplyPosition(*this->cubeShader);
       this->cube3->Render(*this->cubeShader);
     }
 
   private:
+    kdr::Shader* planeShader;
     kdr::Shader* cubeShader;
     kdr::Shader* colorCubeShader;
 
+    kdr::Solids::Plane* basePlane;
     kdr::Light* light;
     kdr::Solids::ColorCube* lightCube;
 
@@ -174,9 +165,9 @@ int main()
     CAMERA_SENSITIVITY
   );
   const kdr::Color::RGBA clearColor = kdr::Color::RGBA(
-    0.05f,
-    0.05f,
-    0.05f,
+    0.0f,
+    0.3f,
+    0.3f,
     1.0f
   );
 

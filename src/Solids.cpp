@@ -12,7 +12,7 @@ void kdr::Solids::Solid::setPosition(const glm::vec3 position)
   this->model = glm::translate(glm::mat4(1.f), this->position);
 }
 
-void kdr::Solids::Solid::ApplyPosition(kdr::Shader& shader)
+void kdr::Solids::Solid::_applyPosition(kdr::Shader& shader)
 {
   shader.Use();
   GLuint cubeModelLocation = glGetUniformLocation(shader.getID(), "model");
@@ -32,6 +32,24 @@ GLuint cubeIndices[] = {
   27, 28, 29,
   30, 31, 32,
   33, 34, 35
+};
+GLuint colorCubeIndices[] = {
+  1, 0, 5,
+  4, 5, 0,
+  3, 1, 7,
+  5, 7, 1,
+  2, 3, 6,
+  7, 6, 3,
+  0, 2, 4,
+  6, 4, 2,
+  5, 4, 7,
+  6, 7, 4,
+  2, 3, 0,
+  1, 0, 3,
+};
+GLuint planeIndices[] = {
+  0, 1, 2,
+  3, 4, 5,
 };
 
 kdr::Solids::Cube::Cube(const glm::vec3 position, const float edgeLength): kdr::Solids::Solid(position)
@@ -76,35 +94,40 @@ kdr::Solids::Cube::Cube(const glm::vec3 position, const float edgeLength): kdr::
      (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f), 1.f, 1.f, 1.f, 0.f, 0.f,  0.f, -1.f,  0.f, // Bottom
   };
 
-  this->cubeVAO = new kdr::VAO();
-  this->cubeVBO = new kdr::VBO(cubeVertices, sizeof(cubeVertices));
-  this->cubeEBO = new kdr::EBO(cubeIndices, sizeof(cubeIndices));
+  this->VAO = new kdr::VAO();
+  this->VBO = new kdr::VBO(cubeVertices, sizeof(cubeVertices));
+  this->EBO = new kdr::EBO(cubeIndices, sizeof(cubeIndices));
 
-  this->cubeVAO->Bind();
-  this->cubeVBO->Bind();
-  this->cubeEBO->Bind();
+  this->VAO->Bind();
+  this->VBO->Bind();
+  this->EBO->Bind();
 
-  this->cubeVAO->LinkAttrib(*this->cubeVBO, 0, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(0));
-  this->cubeVAO->LinkAttrib(*this->cubeVBO, 1, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-  this->cubeVAO->LinkAttrib(*this->cubeVBO, 2, 2, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
-  this->cubeVAO->LinkAttrib(*this->cubeVBO, 3, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(8 * sizeof(GLfloat)));
+  this->VAO->LinkAttrib(*this->VBO, 0, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(0));
+  this->VAO->LinkAttrib(*this->VBO, 1, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+  this->VAO->LinkAttrib(*this->VBO, 2, 2, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+  this->VAO->LinkAttrib(*this->VBO, 3, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(8 * sizeof(GLfloat)));
 
-  this->cubeVAO->Unbind();
-  this->cubeVBO->Unbind();
-  this->cubeEBO->Unbind();
+  this->VAO->Unbind();
+  this->VBO->Unbind();
+  this->EBO->Unbind();
 }
 
 kdr::Solids::Cube::~Cube()
 {
-  delete this->cubeVAO;
-  delete this->cubeVBO;
-  delete this->cubeEBO;
+  delete this->VAO;
+  delete this->VBO;
+  delete this->EBO;
 }
 
 void kdr::Solids::Cube::Render(kdr::Shader& shader)
 {
   shader.Use();
-  this->cubeVAO->Bind();
+
+  this->VAO->Bind();
+  this->VBO->Bind();
+  this->EBO->Bind();
+
+  this->_applyPosition(shader);
   glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
 }
 
@@ -113,65 +136,37 @@ kdr::Solids::ColorCube::ColorCube(const glm::vec3 position, const float edgeLeng
   this->position = position;
   this->color = color;
 
-  GLfloat cubeVertices[] = {
-     (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
-    -(edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
-     (edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
-    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
-     (edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
-    -(edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
-     (edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
-     (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
-     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
-     (edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
-     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
-     (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
-    -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
-     (edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
-    -(edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
-     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
-    -(edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
-     (edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
-    -(edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
-    -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
-    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
-    -(edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
-    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
-    -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
-     (edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
-    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
-     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
-    -(edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
-     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
-    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+  GLfloat colorCubeVertices[] = {
     -(edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
      (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
     -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
      (edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
-    -(edgeLength / 2.f), -(edgeLength / 2.f), -(edgeLength / 2.f),
-     (edgeLength / 2.f), -(edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f),  (edgeLength / 2.f),
+    -(edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
+     (edgeLength / 2.f),  (edgeLength / 2.f), -(edgeLength / 2.f),
   };
 
-  this->cubeVAO = new kdr::VAO();
-  this->cubeVBO = new kdr::VBO(cubeVertices, sizeof(cubeVertices));
-  this->cubeEBO = new kdr::EBO(cubeIndices, sizeof(cubeIndices));
+  this->VAO = new kdr::VAO();
+  this->VBO = new kdr::VBO(colorCubeVertices, sizeof(colorCubeVertices));
+  this->EBO = new kdr::EBO(colorCubeIndices, sizeof(colorCubeIndices));
 
-  this->cubeVAO->Bind();
-  this->cubeVBO->Bind();
-  this->cubeEBO->Bind();
+  this->VAO->Bind();
+  this->VBO->Bind();
+  this->EBO->Bind();
 
-  this->cubeVAO->LinkAttrib(*this->cubeVBO, 0, 3, GL_FLOAT, 0, (void*)(0));
+  this->VAO->LinkAttrib(*this->VBO, 0, 3, GL_FLOAT, 0, (void*)(0));
 
-  this->cubeVAO->Unbind();
-  this->cubeVBO->Unbind();
-  this->cubeEBO->Unbind();
+  this->VAO->Unbind();
+  this->VBO->Unbind();
+  this->EBO->Unbind();
 }
 
 kdr::Solids::ColorCube::~ColorCube()
 {
-  delete this->cubeVAO;
-  delete this->cubeVBO;
-  delete this->cubeEBO;
+  delete this->VAO;
+  delete this->VBO;
+  delete this->EBO;
 }
 
 void kdr::Solids::ColorCube::setColor(const kdr::Color::RGBA color)
@@ -182,10 +177,64 @@ void kdr::Solids::ColorCube::setColor(const kdr::Color::RGBA color)
 void kdr::Solids::ColorCube::Render(kdr::Shader& shader)
 {
   shader.Use();
-  this->cubeVAO->Bind();
+
+  this->VAO->Bind();
+  this->VBO->Bind();
+  this->EBO->Bind();
+
+  this->_applyPosition(shader);
 
   GLuint lightColorLocation = glGetUniformLocation(shader.getID(), "color");
   glUniform4f(lightColorLocation, this->color.red, this->color.green, this->color.blue, this->color.alpha);
 
   glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
+}
+
+kdr::Solids::Plane::Plane(const glm::vec3 position, const float edgeLength): kdr::Solids::Solid(position)
+{
+  this->position = position;
+  GLfloat planeVertices[] = {
+     (edgeLength / 2.f), 0.f,  (edgeLength / 2.f), 1.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0,
+    -(edgeLength / 2.f), 0.f,  (edgeLength / 2.f), 1.f, 1.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0,
+     (edgeLength / 2.f), 0.f, -(edgeLength / 2.f), 1.f, 1.f, 1.f, 1.f, 1.f, 0.f, 1.f, 0,
+    -(edgeLength / 2.f), 0.f, -(edgeLength / 2.f), 1.f, 1.f, 1.f, 0.f, 1.f, 0.f, 1.f, 0,
+     (edgeLength / 2.f), 0.f, -(edgeLength / 2.f), 1.f, 1.f, 1.f, 1.f, 1.f, 0.f, 1.f, 0,
+    -(edgeLength / 2.f), 0.f,  (edgeLength / 2.f), 1.f, 1.f, 1.f, 0.f, 0.f, 0.f, 1.f, 0,
+  };
+
+  this->VAO = new kdr::VAO();
+  this->VBO = new kdr::VBO(planeVertices, sizeof(planeVertices));
+  this->EBO = new kdr::EBO(planeIndices, sizeof(planeIndices));
+
+  this->VAO->Bind();
+  this->VBO->Bind();
+  this->EBO->Bind();
+
+  this->VAO->LinkAttrib(*this->VBO, 0, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(0));
+  this->VAO->LinkAttrib(*this->VBO, 1, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+  this->VAO->LinkAttrib(*this->VBO, 2, 2, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+  this->VAO->LinkAttrib(*this->VBO, 3, 3, GL_FLOAT, 11 * sizeof(GLfloat), (void*)(8 * sizeof(GLfloat)));
+
+  this->VAO->Unbind();
+  this->VBO->Unbind();
+  this->EBO->Unbind();
+}
+
+kdr::Solids::Plane::~Plane()
+{
+  delete this->VAO;
+  delete this->VBO;
+  delete this->EBO;
+}
+
+void kdr::Solids::Plane::Render(kdr::Shader& shader)
+{
+  shader.Use();
+
+  this->VAO->Bind();
+  this->VBO->Bind();
+  this->EBO->Bind();
+
+  this->_applyPosition(shader);
+  glDrawElements(GL_TRIANGLES, sizeof(planeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
 }

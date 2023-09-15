@@ -6,6 +6,11 @@ kdr::Light::Light(const glm::vec3 position, const kdr::Color::RGBA color) : colo
   this->color = color;
 }
 
+const kdr::Color::RGBA kdr::Light::getColor() const
+{
+  return this->color;
+}
+
 void kdr::Light::setPosition(const glm::vec3 position)
 {
   this->position = position;
@@ -36,6 +41,5 @@ void kdr::Light::RenderSolid(kdr::Shader& shader)
 {
   if (this->solid == NULL) return;
 
-  this->solid->ApplyPosition(shader);
   this->solid->Render(shader);
 }
