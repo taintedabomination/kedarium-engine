@@ -1,15 +1,28 @@
 #include "Kedarium/Solids.hpp"
 
-kdr::Solids::Solid::Solid(const glm::vec3 position)
+kdr::Solids::Solid::Solid(const kdr::XYZ position)
 {
   this->position = position;
-  this->model = glm::translate(this->model, this->position);
+  this->model = glm::translate(this->model, glm::vec3(
+    this->position.x,
+    this->position.y,
+    this->position.z
+  ));
 }
 
-void kdr::Solids::Solid::setPosition(const glm::vec3 position)
+void kdr::Solids::Solid::setPosition(const kdr::XYZ position)
 {
   this->position = position;
-  this->model = glm::translate(glm::mat4(1.f), this->position);
+  this->model = glm::translate(glm::mat4(1.f), glm::vec3(
+    position.x,
+    position.y,
+    position.z
+  ));
+}
+
+const kdr::XYZ kdr::Solids::Solid::getPosition() const
+{
+  return this->position;
 }
 
 void kdr::Solids::Solid::_applyPosition(kdr::Shader& shader)
@@ -52,7 +65,7 @@ GLuint planeIndices[] = {
   3, 4, 5,
 };
 
-kdr::Solids::Cube::Cube(const glm::vec3 position, const float edgeLength): kdr::Solids::Solid(position)
+kdr::Solids::Cube::Cube(const kdr::XYZ position, const float edgeLength): kdr::Solids::Solid(position)
 {
   this->position = position;
   GLfloat cubeVertices[] = {
@@ -131,7 +144,7 @@ void kdr::Solids::Cube::Render(kdr::Shader& shader)
   glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
 }
 
-kdr::Solids::ColorCube::ColorCube(const glm::vec3 position, const float edgeLength) : kdr::Solids::Solid(position), color(0.f, 0.f, 0.f, 1.f)
+kdr::Solids::ColorCube::ColorCube(const kdr::XYZ position, const float edgeLength) : kdr::Solids::Solid(position), color(0.f, 0.f, 0.f, 1.f)
 {
   this->position = position;
   this->color = color;
@@ -190,7 +203,7 @@ void kdr::Solids::ColorCube::Render(kdr::Shader& shader)
   glDrawElements(GL_TRIANGLES, sizeof(cubeIndices) / sizeof(GLuint), GL_UNSIGNED_INT, NULL);
 }
 
-kdr::Solids::Plane::Plane(const glm::vec3 position, const float edgeLength): kdr::Solids::Solid(position)
+kdr::Solids::Plane::Plane(const kdr::XYZ position, const float edgeLength): kdr::Solids::Solid(position)
 {
   this->position = position;
   GLfloat planeVertices[] = {

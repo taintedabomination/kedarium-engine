@@ -1,6 +1,6 @@
 #include "Kedarium/Light.hpp"
 
-kdr::Light::Light(const glm::vec3 position, const kdr::Color::RGBA color) : color(1.f, 1.f, 1.f, 1.f)
+kdr::Light::Light(const kdr::XYZ position, const kdr::Color::RGBA color) : color(1.f, 1.f, 1.f, 1.f)
 {
   this->position = position;
   this->color = color;
@@ -11,7 +11,7 @@ const kdr::Color::RGBA kdr::Light::getColor() const
   return this->color;
 }
 
-void kdr::Light::setPosition(const glm::vec3 position)
+void kdr::Light::setPosition(const kdr::XYZ position)
 {
   this->position = position;
 }
@@ -41,5 +41,6 @@ void kdr::Light::RenderSolid(kdr::Shader& shader)
 {
   if (this->solid == NULL) return;
 
+  this->solid->setPosition(this->position);
   this->solid->Render(shader);
 }

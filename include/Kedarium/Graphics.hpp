@@ -8,6 +8,30 @@
 namespace kdr
 {
   /**
+   * Represents a 3D coordinate with x, y, and z components.
+   */
+  struct XYZ
+  {
+    float x;
+    float y;
+    float z;
+
+    /**
+     * Constructor for initializing the XYZ struct with specific x, y, and z values.
+     *
+     * @param x The x-coordinate of the 3D coordinate.
+     * @param y The y-coordinate of the 3D coordinate.
+     * @param z The z-coordinate of the 3D coordinate.
+     */
+    XYZ(
+      const float x,
+      const float y,
+      const float z
+    ) : x(x), y(y), z(z)
+    {};
+  };
+
+  /**
    * Represents an OpenGL shader program.
    */
   class Shader

@@ -16,14 +16,26 @@ namespace kdr
     class Solid
     {
       public:
-        Solid(const glm::vec3 position);
+        /**
+         * Constructs a Solid object with the specified 3D position.
+         *
+         * @param position The 3D position of the solid as a kdr::XYZ.
+         */
+        Solid(const kdr::XYZ position);
 
         /**
          * Sets the position of the solid in 3D space.
          *
-         * @param position The new position of the solid as a glm::vec3.
+         * @param position The new position of the solid as a kdr::XYZ.
          */
-        void setPosition(const glm::vec3 position);
+        void setPosition(const kdr::XYZ position);
+
+        /**
+         * Gets the position of the solid in 3D space.
+         *
+         * @return The position of the solid as a kdr::XYZ.
+         */
+        const kdr::XYZ getPosition() const;
 
         /**
           * Renders the solid using a shader program.
@@ -33,7 +45,7 @@ namespace kdr
         virtual void Render(kdr::Shader& shader) = 0;
 
       protected:
-        glm::vec3 position{glm::vec3(0.f, 0.f, 0.f)};
+        kdr::XYZ position{kdr::XYZ(0.f, 0.f, 0.f)};
         glm::mat4 model{glm::mat4(1.f)};
 
         kdr::VAO* VAO;
@@ -60,7 +72,7 @@ namespace kdr
          * @param position The position of the cube in 3D space.
          * @param edgeLength The edge length of the Cube.
          */
-        Cube(const glm::vec3 position, const float edgeLength);
+        Cube(const kdr::XYZ position, const float edgeLength);
         /**
          * Destructor for the Cube object.
          */
@@ -83,7 +95,7 @@ namespace kdr
          * @param position The position of the cube in 3D space.
          * @param edgeLength The edge length of the ColorCube.
          */
-        ColorCube(const glm::vec3 position, const float edgeLength);
+        ColorCube(const kdr::XYZ position, const float edgeLength);
         /**
          * Destructor for the ColorCube object.
          */
@@ -116,7 +128,7 @@ namespace kdr
          * @param position The position of the plane in 3D space.
          * @param edgeLength The edge length of the Plane.
          */
-        Plane(const glm::vec3 position, const float edgeLength);
+        Plane(const kdr::XYZ position, const float edgeLength);
         /**
          * Destructor for the Plane object.
          */

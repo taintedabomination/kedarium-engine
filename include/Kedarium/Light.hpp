@@ -21,7 +21,7 @@ namespace kdr {
        * @param position The position of the light source in 3D space.
        * @param color The color of the light source as a glm::vec4 (RGBA).
        */
-      Light(const glm::vec3 position, const kdr::Color::RGBA color);
+      Light(const kdr::XYZ position, const kdr::Color::RGBA color);
 
       /**
        * Gets the color of the light source.
@@ -33,9 +33,9 @@ namespace kdr {
       /**
        * Sets the position of the light source in 3D space.
        *
-       * @param position The new position of the light source as a glm::vec3.
+       * @param position The new position of the light source as a kdr::XYZ.
        */
-      void setPosition(const glm::vec3 position);
+      void setPosition(const kdr::XYZ position);
       /**
        * Sets the color of the light source.
        *
@@ -63,7 +63,7 @@ namespace kdr {
       void RenderSolid(kdr::Shader& shader);
 
     private:
-      glm::vec3 position;
+      kdr::XYZ position{kdr::XYZ(0.f, 0.f, 0.f)};
       kdr::Color::RGBA color;
       kdr::Solids::Solid* solid;
   };

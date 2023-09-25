@@ -1,4 +1,5 @@
 #include <GL/glew.h>
+#include <vector>
 
 #include "Kedarium/Core.hpp"
 #include "Kedarium/Window.hpp"
@@ -25,71 +26,56 @@ class MyWindow : public kdr::Window
   public:
     MyWindow(const kdr::WindowProps& windowProps) : kdr::Window(windowProps)
     {
-      this->planeShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
       this->cubeShader = new kdr::Shader("resources/Shaders/default.vert", "resources/Shaders/default.frag");
       this->colorCubeShader = new kdr::Shader("resources/Shaders/colored.vert", "resources/Shaders/colored.frag");
 
-      this->texture1 = new kdr::Texture("resources/Textures/gold.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+      this->texture1 = new kdr::Texture("resources/Textures/tiles.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
       this->texture1->TextureUnit(*this->cubeShader, "tex0", 0);
-      this->texture2 = new kdr::Texture("resources/Textures/diamond.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-      this->texture2->TextureUnit(*this->cubeShader, "tex0", 0);
-      this->texture3 = new kdr::Texture("resources/Textures/soulsand.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-      this->texture3->TextureUnit(*this->cubeShader, "tex0", 0);
 
-      this->basePlane = new kdr::Solids::Plane(
-        glm::vec3(0.f, -5.f, 0.f),
-        20.f
-      );
       this->light = new kdr::Light(
-        glm::vec3(0.f, 3.f, 0.f),
+        kdr::XYZ(0.f, 3.f, 0.f),
         kdr::Color::RGBA(1.f, 1.f, 1.f, 1.f)
       );
       this->lightCube = new kdr::Solids::ColorCube(
-        glm::vec3(0.f, 3.f, 0.f),
+        kdr::XYZ(0.f, 3.f, 0.f),
         0.25f
       );
-      this->cube1 = new kdr::Solids::Cube(
-        glm::vec3(-2.f, 0.f, 0.f),
-        1.f
-      );
-      this->cube2 = new kdr::Solids::Cube(
-        glm::vec3(0.f, 0.f, 0.f),
-        1.f
-      );
-      this->cube3 = new kdr::Solids::Cube(
-        glm::vec3(2.f, 0.f, 0.f),
-        1.f
-      );
+
+      for (int z = 0; z < 32; z++)
+      {
+        for (int x = 0; x < 32; x++)
+        {
+          this->cubes.push_back(new kdr::Solids::Cube(
+            kdr::XYZ((float)(x), sin(x / 2.f) * cos(z / 2.f), (float)(z)),
+            1.f
+          ));
+        }
+      }
     };
 
     ~MyWindow()
     {
-      this->planeShader->Delete();
       this->cubeShader->Delete();
       this->colorCubeShader->Delete();
 
       this->texture1->Delete();
-      this->texture2->Delete();
-      this->texture3->Delete();
 
-      delete this->basePlane;
       delete this->light;
       delete this->lightCube;
 
-      delete this->planeShader;
       delete this->cubeShader;
       delete this->colorCubeShader;
 
-      delete this->cube1;
-      delete this->cube2;
-      delete this->cube3;
-
       delete this->texture1;
-      delete this->texture2;
-      delete this->texture3;
     }
 
-    void update(){}
+    void update(){
+      this->light->setPosition(kdr::XYZ(
+        ((float)sin(this->getTime()) + 1.f) * 16.f,
+        5.f,
+        ((float)sin(this->getTime()) + 1.f) * 16.f
+      ));
+    }
 
     void render()
     {
@@ -101,18 +87,10 @@ class MyWindow : public kdr::Window
       glUniform3f(cameraPositionLocation, cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
       this->lightCube->setColor(this->light->getColor());
-      this->light->Use(*this->planeShader);
       this->light->Use(*this->cubeShader);
       this->light->setSolid(this->lightCube);
 
-      this->texture1->Unbind();
-      this->texture2->Unbind();
-      this->texture3->Unbind();
-
-      this->planeShader->Use();
       this->texture1->Bind();
-      this->camera->useMatrix(this->planeShader->getID(), "cameraMatrix");
-      this->basePlane->Render(*this->planeShader);
 
       this->colorCubeShader->Use();
       this->camera->useMatrix(this->colorCubeShader->getID(), "cameraMatrix");
@@ -121,31 +99,24 @@ class MyWindow : public kdr::Window
 
       this->cubeShader->Use();
       this->camera->useMatrix(this->cubeShader->getID(), "cameraMatrix");
-
       this->texture1->Bind();
-      this->cube1->Render(*this->cubeShader);
-      this->texture2->Bind();
-      this->cube2->Render(*this->cubeShader);
-      this->texture3->Bind();
-      this->cube3->Render(*this->cubeShader);
+
+      for (kdr::Solids::Cube* cube : this->cubes)
+      {
+        cube->Render(*this->cubeShader);
+      }
     }
 
   private:
-    kdr::Shader* planeShader;
     kdr::Shader* cubeShader;
     kdr::Shader* colorCubeShader;
 
-    kdr::Solids::Plane* basePlane;
     kdr::Light* light;
     kdr::Solids::ColorCube* lightCube;
 
-    kdr::Solids::Cube* cube1;
-    kdr::Solids::Cube* cube2;
-    kdr::Solids::Cube* cube3;
+    std::vector<kdr::Solids::Cube*> cubes;
 
     kdr::Texture* texture1;
-    kdr::Texture* texture2;
-    kdr::Texture* texture3;
 };
 
 int main()
